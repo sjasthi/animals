@@ -23,10 +23,10 @@
 
     <header style="background-color:white">
         <div id="logo">
-            <img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;">
+            <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
         </div>
         <div id="game_title">
-            <p>Animals</p>
+            <p id="title">Animals</p>
         </div>
         <div id="menu_buttons">
             <div id="help_button">
@@ -56,11 +56,14 @@
         <div id="submission_panel">
             <form>
                 <input id="input_box" type="text" id="guess_input" name="guess_input">
-                <input id="submit_button" type="submit" value="Submit">
+                <button id="submit_button" type="button" onclick="inputGuess()">Submit</button>
             </form>
         </div>
     </body>
     <!-- JavaScript method to build tables now that all divs have been created -->
-    <script>buildTables()</script>
+    <script>
+		findLengthGuesses();
+		buildTables();
+	</script>
 
 </html>
