@@ -150,3 +150,4 @@ function selectAnimal(language, id) {
             break;
     }
 }
+
