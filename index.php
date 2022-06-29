@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/animals.css">
-        <script src="js/animals.js"></script>    <!-- add ?newversion at end if chrome isn't updating js file -->
+        <script src="js/animals.js?"></script>    <!-- add ?newversion at end if chrome isn't updating js file -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>     
         <style>
             /* TD Settings for different numbers of guesses:
@@ -24,7 +24,7 @@
 
     <header style="background-color:white">
         <div id="logo">
-            <img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;">
+            <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
         </div>
         <div id="game_title">
             <p>Animals</p>
@@ -34,7 +34,7 @@
                 <img src="images/help_icon.png" alt="Help Icon" style="Display:Block;width:70px;height:70px;">
             </div>
             <div id="stat_button">
-                <img src="images/stat_icon.png" alt="Stat Icon" style="Display:Block;width:70px;height:70px;">
+                <a href="list_words.php"><img src="images/stat_icon.png" alt="Stat Icon" style="Display:Block;width:70px;height:70px;"></a>
             </div>
             <div id="settings_button">
                 <img src="images/settings_icon.png" alt="Settings Icon" style="Display:Block;width:70px;height:70px;">
@@ -56,7 +56,7 @@
         </div>
         <div id="submission_panel">
             <!-- Form calls Javascript function processGuess when the submit button is clicked. -->
-            <form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false">
+            <form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false;">
                 <input id="input_box" type="text" name="input_box">
                 <input id="submit_button" type="submit" value="Submit" name="submit">
             </form>
