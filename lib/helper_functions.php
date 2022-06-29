@@ -27,7 +27,7 @@
 
     function getWord() {
         // TODO - Code to retrieve the word for the current day/time from the database
-        //return "చందమామ";
+        //return "మిరపకాయ";
         return "check";
     }
 
@@ -65,7 +65,11 @@
         $response = curl_exec($api_info);
         $encoding = mb_detect_encoding($response);
         if($encoding == "UTF-8") {
-            $response = preg_replace('/[^(\x20-\x7F)]*/','', $response);
+            if($language == "English") {
+                $response = preg_replace('/[^(\x20-\x7F)]*/','', $response);
+            } else {
+                $response = preg_replace('/[^(\x20-\x7F)]*/','', $response, 1);
+            }
         }
         curl_close($api_info);
         $data = json_decode($response, true);
@@ -92,5 +96,7 @@
 
          return $data["data"];
     }
+
+    //echo "<script>console.log($response);</script>";    // console example
 
 ?>
