@@ -26,9 +26,29 @@
     }
 
     function getWord() {
-        // TODO - Code to retrieve the word for the current day/time from the database
+        date_default_timezone_set('America/Chicago');
+        $date = date("Y-m-d");
+        $conn = mysqli_connect("localhost", "root", "", "ics499_animals");
+        if(date("H") >= 8 && date("H") < 20) {
+            $sql = "SELECT word FROM puzzle_words WHERE date = '$date' AND time = '08:00:00'";
+        } else {
+            $sql = "SELECT word FROM puzzle_words WHERE date = '$date' AND time = '20:00:00'";
+        }
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $conn->close();
+        return $row["word"];
+        /*if ($result->num_rows > 0) {
+            // output data of each row
+            $row = $result->fetch_assoc();
+            $conn->close();
+            return $row["word"];
+        } else {
+            $conn->close();
+            return "error";
+        } */
         //return "మిరపకాయ";
-        return "check";
+        //return "check";
     }
 
     function getLanguage($word) {
@@ -74,7 +94,6 @@
         curl_close($api_info);
         $data = json_decode($response, true);
 
-        //return $data["data"];
         echo json_encode($data["data"]);
     }
 
