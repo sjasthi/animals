@@ -51,12 +51,22 @@ function buildTables() {
         guessLimit = data;
     });
 
-    if(guessLimit == 8) {
-        tdTag = "<td style='width:100px;height:70px;font-size:48px'></td>"
-    } else if (guessLimit == 10) {
-        tdTag = "<td style='width:90px;height:60px;font-size:42px'></td>"
+    if(puzzleWordLanguage == "English") {
+        if(guessLimit == 8) {
+            tdTag = "<td style='width:100px;height:70px;font-size:48px'></td>"
+        } else if (guessLimit == 10) {
+            tdTag = "<td style='width:90px;height:60px;font-size:42px'></td>"
+        } else {
+            tdTag = "<td style='width:80px;height:50px;font-size:36px'></td>"
+        }
     } else {
-        tdTag = "<td style='width:80px;height:50px;font-size:36px'></td>"
+        if(guessLimit == 8) {
+            tdTag = "<td style='width:100px;height:70px;font-size:36px'></td>"
+        } else if (guessLimit == 10) {
+            tdTag = "<td style='width:90px;height:60px;font-size:30px'></td>"
+        } else {
+            tdTag = "<td style='width:80px;height:50px;font-size:24px'></td>"
+        }
     }
 
     for(let i = 0; i < puzzleWordLength; i++) {
@@ -68,6 +78,8 @@ function buildTables() {
 
     document.getElementById("character_table").innerHTML = tableRows;
     document.getElementById("animal_table").innerHTML = tableRows;
+    document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
+        "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p><p>Good luck!</p>"
 }
 
 /* Function to process guess words submitted by the player. This function uses ajax 
@@ -77,10 +89,12 @@ guess word and the appropriate animal pictures.  */
 function processGuess() {
     let guessWord;
     let guessWordLanguage;
+    let guessWordLength;
     let logicalChars;
     let matchString = "";
     guessWord = document.getElementById("input_box").value.toLowerCase();
 
+    // API call to get language of guess word
     $.ajax({
         async: false,
         url: "lib/helper_functions.php",
@@ -94,12 +108,35 @@ function processGuess() {
         async: false,
         url: "lib/helper_functions.php",
         type: "POST",
+        data: {method: "getLength", arg1: guessWord, arg2: guessWordLanguage}
+    }).done(function(data) {
+        guessWordLength = data;
+    });
+
+    // Guard clauses to catch guesses of incorrect length or language.
+    if(guessWordLanguage == puzzleWordLanguage) {
+        if(guessWordLength != puzzleWordLength) {
+            alert("The puzzle word has " + puzzleWordLength + " characters.\nPlease enter a guess with " + puzzleWordLength + " characters.");
+            document.getElementById("input_box").value = "";
+            return;
+        }
+    } else {
+        alert("The puzzle word is a word in " + puzzleWordLanguage + ".\nPlease enter a guess which is a word in " + puzzleWordLanguage + ".");
+        document.getElementById("input_box").value = "";
+        return;
+    }
+
+    // API call to get logical chars of guess word
+    $.ajax({
+        async: false,
+        url: "lib/helper_functions.php",
+        type: "POST",
         data: {method: "getLogicalChars", arg1: guessWord, arg2: guessWordLanguage}
     }).done(function(data) {
         logicalChars = JSON.parse(data);
-        //alert(logicalChars);
     });
 
+    // API call to check if guess word matches puzzle word
     $.ajax({
         async: false,
         url: "lib/helper_functions.php",
@@ -108,6 +145,16 @@ function processGuess() {
     }).done(function(data) {
         matchString = data;
     });
+
+    // Code to take the response string from the match API, convert it to an array, sort it, and then
+    // rebuild it as a string again so the animals can be loaded in the table in the correct order.
+    var arr = matchString.split("");
+    var sorted = arr.sort();
+    matchString = sorted[0];
+    for (var i = 1; i < sorted.length; i++) {
+        matchString += sorted[i];
+    }
+
 
     if(numberOfAttempts <= guessLimit && gameResult == "") {
         for(var c = 0; c < puzzleWordLength; c += 1) {
@@ -119,18 +166,21 @@ function processGuess() {
         }
         document.getElementById("input_box").value = "";
         if(numberOfAttempts < guessLimit) {
-            if(matchString == "11111") {
-                gameResult = "WINNER!";
-                alert(gameResult);
+            if(matchString == "11111" || matchString == "1111" || matchString == "111") {
+                gameResult = "win";
+                document.getElementById("game_message").innerHTML =
+                    "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p><p>Click here to copy the image.</p>";
             }
         }
         if (numberOfAttempts == guessLimit) {
-            if(matchString == "11111") {
-                gameResult = "WINNER!";
-                alert(gameResult);
+            if(matchString == "11111" || matchString == "1111" || matchString == "111") {
+                gameResult = "win";
+                document.getElementById("game_message").innerHTML =
+                    "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p><p>Click here to copy the image.</p>";
             } else {
-                gameResult = "Sorry! You ran out of guesses!";
-                alert(gameResult);
+                gameResult = "loss";
+                document.getElementById("game_message").innerHTML =
+                    "<p></p><p>Sorry! You have run out of guesses...</p><p>The puzzle word was: " + puzzleWord + "</p><p>New words are available at 8am and 8pm every day!</p>";
             }
         }
         numberOfAttempts++;
@@ -173,4 +223,3 @@ function selectAnimal(language, id) {
             break;
     }
 }
-

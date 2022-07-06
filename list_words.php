@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/animals.css">
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-        <script src="js/animals.js"></script>    <!-- add ?newversion at end if chrome isn't updating js file -->
+        <script src="js/animals.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>     
         <style>
             td {
@@ -62,7 +62,7 @@
             </div>
         </div>
     </header>
-    <body style="background-color=blue">
+    <body style="background-color:light-gray">
 
 <?php $page_title = 'Animals > puzzle word list';
 ?>
@@ -72,23 +72,6 @@
    
     <h2 id="title">Word List</h2><br>
     
-    <?php
-                    $conn = mysqli_connect("localhost", "root", "", "ics499_animals");
-                    $word = $_POST['word'];
-                    $date = $_POST['date'];
-                    $time = $_POST['time'];
-
-                    $INSERT = "INSERT INTO puzzle_words(word, date, time, total_plays, winning_plays) values(?, ?, ?, 0, 0)";            
-
-                    $stmt = $conn->prepare($INSERT);
-                    $stmt->bind_param("sss", $word, $date, $time);
-                    if ($stmt->execute()) {
-                        echo "<br><p style='text-align:center'>New record inserted sucessfully.<p><br>";
-                    }
-                    else {
-                        echo $stmt->error;
-                    }
-    ?>
     <div id="customerTableView">
         <button><a class="btn btn-sm" href="create_word.php">Create a Word</a></button>
         <table class="display" id="wordTable" style="width:100%">
