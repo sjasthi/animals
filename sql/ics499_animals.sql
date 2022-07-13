@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `custom_words` (
-  `Id` int(50) NOT NULL,
+  `Id` int(50) NOT NULL AUTO_INCREMENT,
   `word` varchar(20) NOT NULL,
   `Email` varchar(50) NOT NULL,
   `total_plays` int(10) NOT NULL,

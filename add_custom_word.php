@@ -20,11 +20,11 @@
     <header style="background-color:white">
         <div id="secondary_screen_buttons">
             <div id="back_button">
-                <a href="list_words.php"><img src="images/back_icon.png" alt="Back Icon" style="Display:Block;width:70px;height:70px;"></a>
+                <a href="index.php"><img src="images/back_icon.png" alt="Back Icon" style="Display:Block;width:70px;height:70px;"></a>
             </div>
         </div>
         <div id="game_title">
-            <p>Add Puzzle Word</p>
+            <p>Create Custom Word</p>
         </div>
         <div id="secondary_screen_logo">
             <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
@@ -32,32 +32,26 @@
     </header>
 
     <body style="background-color:#f2edf2">
-        <form action="insert.php" method="POST">
+        <p style="text-align:center">Words must be 3 to 5 characters</p>
+        <form action="custom_word_url.php" method="POST">
             <table style="color:black; margin-left:auto; margin-right: auto;">
                 <tr>
                     <td>
-                        Enter Word:                     
+                        Enter Custom Word:                     
                     </td>
                     <td>
-                        <input type="text" name="word" required>
+                        <input type="text" minlength="3" maxlength="5" name="word" required>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        Enter Date to be played:                     
+                        Enter Your Email Address:                     
                     </td>
                     <td>
-                        <input type="date" name="date" required>
+                        <input type="text" name="email" required>
                     </td>
                 </tr>
-                <tr>
-                <td>
-                        Enter time to be played:                     
-                    </td>
-                    <td>
-                        <input type="time" name="time" required>
-                    </td>
-                </tr>
+
                 <tr>
                     <td>
                         <input type="Submit" value="Submit" name = "submit">

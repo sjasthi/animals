@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/animals.css">
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-        <script src="js/animals.js"></script>    <!-- add ?newversion at end if chrome isn't updating js file -->
+        <script src="js/animals.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>     
         <style>
             td {
@@ -41,28 +41,22 @@
     </head>
 
     <header style="background-color:white">
-        <div id="logo">
-            <a href="index.php"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
+        <div id="secondary_screen_buttons">
+            <div id="back_button">
+                <a href="index.php"><img src="images/back_icon.png" alt="Back Icon" style="Display:Block;width:70px;height:70px;"></a>
+            </div>
+            <div id="add_button">
+                <a href="create_word.php"><img src="images/add_icon.png" alt="Add Icon" style="Display:Block;width:70px;height:70px;"></a>
+            </div>
         </div>
         <div id="game_title">
-            <p>Word Bank Table</p>
+            <p>Puzzle Word List</p>
         </div>
-        <div id="menu_buttons">
-            <div id="help_button">
-                <img src="images/help_icon.png" alt="Help Icon" style="Display:Block;width:70px;height:70px;">
-            </div>
-            <div id="stat_button">
-                <a href="list_words.php"><img src="images/stat_icon.png" alt="Stat Icon" style="Display:Block;width:70px;height:70px;"></a>
-            </div>
-            <div id="settings_button">
-                <img src="images/settings_icon.png" alt="Settings Icon" style="Display:Block;width:70px;height:70px;">
-            </div>
-            <div id="profile_button">
-                <img src="images/profile_icon.png" alt="Profile Icon" style="Display:Block;width:70px;height:70px;">
-            </div>
+        <div id="secondary_screen_logo">
+            <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
         </div>
     </header>
-    <body style="background-color=blue">
+    <body style="background-color:#f2edf2">
 
 <?php $page_title = 'Animals > puzzle word list';
 ?>
@@ -85,7 +79,6 @@
                     }
     ?>
     <div id="customerTableView">
-        <button><a class="btn btn-sm" href="create_word.php">Create a Word</a></button>
         <table class="display" id="wordTable" style="width:100%">
             <div class="table responsive">
                 <thead>

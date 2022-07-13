@@ -38,17 +38,6 @@
         $row = $result->fetch_assoc();
         $conn->close();
         return $row["word"];
-        /*if ($result->num_rows > 0) {
-            // output data of each row
-            $row = $result->fetch_assoc();
-            $conn->close();
-            return $row["word"];
-        } else {
-            $conn->close();
-            return "error";
-        } */
-        //return "మిరపకాయ";
-        //return "check";
     }
 
     function getLanguage($word) {
