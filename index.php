@@ -5,8 +5,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/animals.css">
-        <script src="js/animals.js?"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>     
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+        <script type="text/javascript" src="js/animals.js"></script>    
         <style>
             td {
                 font-family: Arial, Helvetica, sans-serif;
@@ -22,7 +22,6 @@
             .dropdown-content {
                 display: none;
                 position: absolute;
-                right: 0;
                 background-color: #f1f1f1;
                 min-width: 160px;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -40,7 +39,7 @@
     </head>
 
     <header style="background-color:white">
-        <div id="logo">
+        <div id="main_screen_logo">
             <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
         </div>
         <div id="game_title">
@@ -61,26 +60,29 @@
                 <button onclick="showSettingsDropdown()" class="dropbtn">
                     <img src="images/settings_icon.png" alt="Settings Icon" style="Display:Block;width:70px;height:70px;">
                 </button>
-                <div id="settingsDropdown" class="dropdown-content">
-                    <p>Access Level: ADMIN</p>
-                    <a href="#">Set # of Guesses</a>
-                    <a href="#">Set Language</a>
+                <div id="settings_dropdown" class="dropdown-content">
+                    <p id="settings_menu_1">Access Level: GUEST</p>
+                    <a id="settings_menu_2" href="#">Set # of Guesses</a>
+                    <a id="settings_menu_3" href="#">Set Language</a>
                 </div>
             </div>
             <div id="profile_button">
                 <button onclick="showProfileDropdown()" class="dropbtn">
                     <img src="images/profile_icon.png" alt="Profile Icon" style="Display:Block;width:70px;height:70px;">
                 </button>
-                <div id="profileDropdown" class="dropdown-content">
-                    <p>Access Level: ADMIN</p>
-                    <a href="#">Word Lists</a>   <!-- Change "#" to "list_words.php" to activate word list option in dropdown menu -->
-                    <a href="#">Log Out</a>
+                <div id="profile_dropdown" class="dropdown-content">
+                    <p id="profile_menu_1">Access Level: GUEST</p>
+                    <a id="profile_menu_2" href="#">Create Custom Word</a>
+                    <a id="profile_menu_3" href="#">Puzzle Word List</a>
+                    <a id="profile_menu_4" href="#">Custom Word List</a>
+                    <!--<a id="profile_menu_5" href="https://www.telugupuzzles.com/login.php" target="_blank" onclick=logInOut()>Log In</a>-->
+                    <a id="profile_menu_5" href="#" onclick=logInOut()>Log In</a>
                 </div>
             </div>
         </div>
     </header>
 
-    <body style="background-color:darkblue">
+    <body onload=updateMenus() style="background-color:darkblue">
         <div id="game_panel">
             <div id="character_tile_panel">
                 <table id="character_table"></table>
@@ -151,16 +153,17 @@ in the correct positon, the third character is in the word but not in the correc
 
         <script>
             // Javascript function to pull puzzle_word details and build UI tables
+            pullWord();
             buildTables();
 
             /* These functions make the dropdown menus and modals appear. They weren't working from the external
             file, so I put them here. */
             function showProfileDropdown() {
-                document.getElementById("profileDropdown").classList.toggle("show");
+                document.getElementById("profile_dropdown").classList.toggle("show");
             }
 
             function showSettingsDropdown() {
-                document.getElementById("settingsDropdown").classList.toggle("show");
+                document.getElementById("settings_dropdown").classList.toggle("show");
             }
 
             function showHelpModal() {
@@ -191,7 +194,7 @@ in the correct positon, the third character is in the word but not in the correc
                 if (event.target == helpModal) {
                     helpModal.style.display = "none";
                 } else if (event.target == statModal) {
-                    statModal.style.display = "none";
+                    statModal.style.display = "none";  
                 }
             }
         </script>

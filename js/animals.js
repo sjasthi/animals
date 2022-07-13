@@ -6,15 +6,17 @@ let numberOfAttempts = 1;
 let animal = "";
 let pictureFile = "";
 let gameResult = "";
+let accessLevel = "guest"
 
-/* Function to pull puzzleWord details and build UI tables. This function uses ajax to
-call methods in helper_functions.php to get puzzleWord details from the database. Then it
-uses the guessLimit and puzzleWordLength to build tables of appropriate sizes. */
-function buildTables() {
-    let tableRows = "";
-    let cells = "";
-    let tdTag = "";
+/* Function which fills word with input. Used for custom plays
+*/
+function fillWord(word) {
+    puzzleWord = word;
+}
 
+/* Function to pull puzzleWord. This function uses ajax to call helper_functions.php method
+to load the puzzleWord from the database. */
+function pullWord() {
     $.ajax({
         async: false,
         url: "lib/helper_functions.php",
@@ -23,6 +25,15 @@ function buildTables() {
     }).done(function(data) {
         puzzleWord = data;
     });
+}
+
+/* Function to pull puzzleWord details and build UI tables. This function uses ajax to
+call methods in helper_functions.php to get puzzleWord details from the database. Then it
+uses the guessLimit and puzzleWordLength to build tables of appropriate sizes. */
+function buildTables() {
+    let tableRows = "";
+    let cells = "";
+    let tdTag = "";
 
     $.ajax({
         async: false,
@@ -82,6 +93,57 @@ function buildTables() {
         "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p><p>Good luck!</p>"
 }
 
+function logInOut() {
+    accessLevel = "admin";
+    updateMenus();
+}
+
+/*
+settings_menu_1 -> Access Level: <accessLevel> (Informational message)
+settings_menu_2 -> Set # of Guesses
+settings_menu_3 -> Set Language
+profile_menu_1 -> Access Level: <accessLevel> (Informational message)
+profile_menu_2 -> Create Custom Word
+profile_menu_3 -> Puzzle Word List
+profile_menu_4 -> Custom Word List
+profile_menu_5 -> Log In/Log Out
+*/
+function updateMenus() {
+    if (accessLevel == "guest") {
+        document.getElementById("settings_menu_1").innerHTML = "Access Level: GUEST";
+        document.getElementById("settings_menu_2").setAttribute('href', "#");                   // No access to set guesses
+        document.getElementById("settings_menu_3").setAttribute('href', "#");                   // No access to set languages
+        document.getElementById("profile_menu_1").innerHTML = "Access Level: GUEST";
+        document.getElementById("profile_menu_2").setAttribute('href', "#");                    // No access to create custom word
+        document.getElementById("profile_menu_3").setAttribute('href', "#");                    // No access to puzzle word list
+        document.getElementById("profile_menu_4").setAttribute('href', "#");                    // No access to custom word list
+        document.getElementById("profile_menu_5").innerHTML = "Log In";
+        document.getElementById("profile_menu_5").setAttribute('href', "#");                    // Guest will be able to log in
+    } else if (accessLevel == "member") {
+        document.getElementById("settings_menu_1").innerHTML = "Access Level: MEMBER";
+        document.getElementById("settings_menu_2").setAttribute('href', "#");                   // No access to set guesses
+        document.getElementById("settings_menu_3").setAttribute('href', "#");                   // No access to set language
+        document.getElementById("profile_menu_1").innerHTML = "Access Level: MEMBER";
+        document.getElementById("profile_menu_2").setAttribute('href', "add_custom_word.php");  // Member will have access to create custom word
+        document.getElementById("profile_menu_3").setAttribute('href', "#");                    // No access to puzzle word list
+        document.getElementById("profile_menu_4").setAttribute('href', "#");                    // Member will have access to custom word list (only that user's words)
+        document.getElementById("profile_menu_5").innerHTML = "Log Out";
+        document.getElementById("profile_menu_5").setAttribute('href', "#");                    // Member will be able to log out
+    } else if (accessLevel == "admin") {
+        document.getElementById("settings_menu_1").innerHTML = "Access Level: ADMIN";
+        document.getElementById("settings_menu_2").setAttribute('href', "#");                   // Admin will have access to set guesses
+        document.getElementById("settings_menu_3").setAttribute('href', "#");                   // Admin will have access to set language
+        document.getElementById("profile_menu_1").innerHTML = "Access Level: ADMIN";
+        document.getElementById("profile_menu_2").setAttribute('href', "add_custom_word.php");  // Admin will have access to create custom word
+        document.getElementById("profile_menu_3").setAttribute('href', "list_words.php");       // Admin will have access to puzzle word list
+        document.getElementById("profile_menu_4").setAttribute('href', "#");                    // Admin will have access to custom world list (all words?)
+        document.getElementById("profile_menu_5").innerHTML = "Log Out";
+        document.getElementById("profile_menu_5").setAttribute('href', "#");                    // Admin will be able to log out
+    } else {
+        alert("Unable to build menus. No access level data available.");
+    }
+}
+
 /* Function to process guess words submitted by the player. This function uses ajax 
 to call functions in helper_functions.php to get details about the guess word and
 compare it to the puzzle word.  It then updates the table with the characters of the
@@ -104,6 +166,7 @@ function processGuess() {
         guessWordLanguage = data;
     });
 
+    // API call to get length of guess word
     $.ajax({
         async: false,
         url: "lib/helper_functions.php",

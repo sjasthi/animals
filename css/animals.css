@@ -12,7 +12,7 @@ header {
     height: 120px;
 }
 
-#logo {
+#main_screen_logo {
     position: absolute;
     margin: 20px;
     width: 320px;
@@ -31,17 +31,19 @@ header {
 
 #menu_buttons {
     position: absolute;
-    margin: 20px 20px 20px 1570px;
-    width: 320px;
+    margin: 20px 20px 20px 1470px;
+    width: 400px;
     height: 80px;
     white-space: nowrap;
 }
 
 #help_button {
     display:inline-block;
-    margin: 5px;
+    margin: 5px 5px 5px 0px;
     width: 70px;
     height: 70px;
+    border: 2px solid lightgrey;
+    border-radius: 5px;
 }
 
 #stat_button {
@@ -49,6 +51,8 @@ header {
     margin: 5px 5px 5px 0px;
     width: 70px;
     height: 70px;
+    border: 2px solid lightgrey;
+    border-radius: 5px;
 }
 
 #settings_button {
@@ -56,6 +60,8 @@ header {
     margin: 5px 5px 5px 0px;
     width: 70px;
     height: 70px;
+    border: 2px solid lightgrey;
+    border-radius: 5px;
 }
 
 #profile_button {
@@ -63,6 +69,41 @@ header {
     margin: 5px 5px 5px 0px;
     width: 70px;
     height: 70px;
+    border: 2px solid lightgrey;
+    border-radius: 5px;
+}
+
+#secondary_screen_buttons {
+    position: absolute;
+    margin: 20px 20px 20px 20px;
+    width: 400px;
+    height: 80px;
+    white-space: nowrap;
+}
+
+#back_button {
+    display: inline-block;
+    margin: 5px 5px 5px 0px;
+    width: 70px;
+    height: 70px;
+    border: 2px solid lightgrey;
+    border-radius: 5px;
+}
+
+#add_button {
+    display: inline-block;
+    margin: 5px 5px 5px 0px;
+    width: 70px;
+    height: 70px;
+    border: 2px solid lightgrey;
+    border-radius: 5px;
+}
+
+#secondary_screen_logo {
+    position: absolute;
+    margin: 20px 20px 20px 1650px;
+    width: 320px;
+    height: 80px;
 }
 
 #game_panel {
@@ -186,4 +227,42 @@ form {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+  }
+
+  .button {
+    border: 0;
+    outline: none;
+    border-radius: 0;
+    padding: 15px 0;
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    background: #1ab188;
+    color: #ffffff;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    -webkit-appearance: none;
+  }
+  .button:hover, .button:focus {
+    background: #179b77;
+  }
+
+  .top-row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .top-row > div {
+    float: left;
+    width: 48%;
+    margin-right: 4%;
+  }
+  .top-row > div:last-child {
+    margin: 0;
+  }
+  
+  .button-block {
+    display: block;
+    width: 100%;
   }
