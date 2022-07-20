@@ -43,14 +43,14 @@
     <header style="background-color:white">
         <div id="secondary_screen_buttons">
             <div id="back_button">
-                <a href="index.php"><img src="images/back_icon.png" alt="Back Icon" style="Display:Block;width:70px;height:70px;"></a>
+                <a href="create_custom_word.php"><img src="images/back_icon.png" alt="Back Icon" style="Display:Block;width:70px;height:70px;"></a>
             </div>
             <div id="add_button">
-                <a href="create_word.php"><img src="images/add_icon.png" alt="Add Icon" style="Display:Block;width:70px;height:70px;"></a>
+                <a href="create_custom_word.php"><img src="images/add_icon.png" alt="Add Icon" style="Display:Block;width:70px;height:70px;"></a>
             </div>
         </div>
         <div id="game_title">
-            <p>Puzzle Word List</p>
+            <p>Custom Word List</p>
         </div>
         <div id="secondary_screen_logo">
             <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
@@ -64,15 +64,50 @@
 <!-- Page Content -->
 <br><br>
    
+    <h2 id="title">Word List</h2><br>
+    
+    <?php
+                    $conn = mysqli_connect("localhost", "root", "", "ics499_animals");
+                    $word = $_POST['word'];
+                    $email = $_POST['email'];
 
+                    $found = False;
+                    $sql = "SELECT * FROM custom_words WHERE word = '$word'";
+                    $result = $conn->query($sql);
+                
+                    if ($result -> num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                            $found = True;
+                        }
+                    }//end if
+
+                    if ($found) {
+                        echo "<br><h1 style='text-align:center'>Word already exists in database.</h1><br>";
+                   } else {
+                        $INSERT = "INSERT INTO custom_words(word, email, total_plays, winning_plays) values(?, ?, 0, 0)";            
+
+                        $stmt = $conn->prepare($INSERT);
+                        $stmt->bind_param("ss", $word, $email);
+                        if ($stmt->execute()) {
+                            echo "<br><p style='text-align:center'>New record inserted sucessfully.<p><br>";
+                        }
+                        else {
+                            
+                        }
+                }
+                    $conn -> close(); 
+
+
+
+    ?>
     <div id="customerTableView">
         <table class="display" id="wordTable" style="width:100%; border: 1px solid; border-collapse: collapse;">
             <div class="table responsive">
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Word</th>
-                    <th>Date</th>
-                    <th>Time</th>
+                    <th>Email</th>
                     <th>Winning Plays</th>
                     <th>Total Plays</th>
                     <th>Modify</th>
@@ -82,9 +117,9 @@
                 <tbody>
                 <div>
                     <strong> Toggle column: </strong> 
-                    <a id="toggle" class="toggle-vis" data-column="0">Word</a> - 
-                    <a id="toggle" class="toggle-vis" data-column="1">Date</a> - 
-                    <a id="toggle" class="toggle-vis" data-column="2">Time</a> - 
+                    <a id="toggle" class="toggle-vis" data-column="0">ID</a> - 
+                    <a id="toggle" class="toggle-vis" data-column="1">Word</a> - 
+                    <a id="toggle" class="toggle-vis" data-column="2">Email</a> - 
                     <a id="toggle" class="toggle-vis" data-column="3">Winning Plays</a> - 
                     <a id="toggle" class="toggle-vis" data-column="4">Total Plays</a> - 
                     <a id="toggle" class="toggle-vis" data-column="5">Modify</a> - 
@@ -93,28 +128,28 @@
                 
                 <?php
                 $conn = mysqli_connect("localhost", "root", "", "ics499_animals");
-                $sql = "SELECT * FROM puzzle_words";
+                $sql = "SELECT * FROM custom_words";
                 $result = $conn->query($sql);
 
                 // fetch the data from $_GLOBALS
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while($row = $result->fetch_assoc()) {
+                    $id = $row["Id"];
                     $word = $row["word"];
-                    $date = $row["date"];
-                    $time = $row["time"];
+                    $email = $row["Email"];
                     $winning_plays = $row["winning_plays"];
                     $total_plays = $row["total_plays"];
 
                 ?>
                 <tr>
-                    <td><?php echo $word; ?></td>
-                    <td><div contenteditable="true" onBlur="updateValue(this,'date','<?php echo $word; ?>')"><?php echo $date; ?></div></span> </td>
-                    <td><div contenteditable="true" onBlur="updateValue(this,'time','<?php echo $word; ?>')"><?php echo $time; ?></div></span> </td>
-                    <td><div contenteditable="true" onBlur="updateValue(this,'winning_plays','<?php echo $word; ?>')"><?php echo $winning_plays ?></div></span> </td>
-                    <td><div contenteditable="true" onBlur="updateValue(this,'total_plays','<?php echo $word; ?>')"><?php echo $total_plays; ?></div></span> </td>
-                    <?php echo '<td><a class="btn btn-warning btn-sm" href="update_word.php?id='.$row["word"].'">Modify</a></td>' ?>
-                    <?php echo '<td><a class="btn btn-danger btn-sm" href="delete.php?rn='.$row["word"].'">Delete</a></td>' ?>
+                    <td><?php echo $id; ?></td>
+                    <td><div contenteditable="true" onBlur="updateValue(this,'word','<?php echo $id; ?>')"><?php echo $word; ?></div></span> </td>
+                    <td><div contenteditable="true" onBlur="updateValue(this,'Email','<?php echo $id; ?>')"><?php echo $email; ?></div></span> </td>
+                    <td><div contenteditable="true" onBlur="updateValue(this,'winning_plays','<?php echo $id; ?>')"><?php echo $winning_plays ?></div></span> </td>
+                    <td><div contenteditable="true" onBlur="updateValue(this,'total_plays','<?php echo $id; ?>')"><?php echo $total_plays; ?></div></span> </td>
+                    <?php echo '<td><a class="btn btn-warning btn-sm" href="update_custom_word.php?id='.$row["Id"].'">Modify</a></td>' ?>
+                    <?php echo '<td><a class="btn btn-danger btn-sm" href="delete_custom_word.php?rn='.$row["Id"].'">Delete</a></td>' ?>
                 </tr>
                  <?php  //end while
                 }//end if
@@ -225,7 +260,7 @@
 function updateValue(element,column,id){
         var value = element.innerText
         $.ajax({
-            url:'editable_list.php',
+            url:'editable_custom_list.php',
             type: 'post',
             data:{
                 value: value,

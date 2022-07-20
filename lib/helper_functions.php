@@ -18,6 +18,51 @@
         echo $_POST["method"]($arg1, $arg2, $arg3);
     }
 
+    // Function for checking user before login.  API currently isn't functional, so don't call this method yet.
+    function checkUser($email) {
+        $api_info = curl_init("https://wpapi.telugupuzzles.com/api/userExists.php?email={$email}");
+        curl_setopt($api_info, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($api_info);
+        $encoding = mb_detect_encoding($response);
+        if($encoding == "UTF-8") {
+            $response = preg_replace('/[^(\x20-\x7F)]*/','', $response);
+        }
+        curl_close($api_info);
+        $data = json_decode($response, true);
+
+        return $data["data"];
+    }
+
+    // Function for checking email and password on login.  API currently isn't functional, so don't call this method yet.
+    function wsLogin($email, $password) {
+        $api_info = curl_init("https://wpapi.telugupuzzles.com/api/ws_login.php?email={$email}&password={$password}");
+        curl_setopt($api_info, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($api_info);
+        $encoding = mb_detect_encoding($response);
+        if($encoding == "UTF-8") {
+            $response = preg_replace('/[^(\x20-\x7F)]*/','', $response);
+        }
+        curl_close($api_info);
+        $data = json_decode($response, true);
+
+        return $data["data"];
+    }
+
+    // Function for getting user role from email.  API currently isn't functional, so don't call this method yet.
+    function getRole($email) {
+        $api_info = curl_init("https://wpapi.telugupuzzles.com/api/getRole.php?email={$email}");
+        curl_setopt($api_info, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($api_info);
+        $encoding = mb_detect_encoding($response);
+        if($encoding == "UTF-8") {
+            $response = preg_replace('/[^(\x20-\x7F)]*/','', $response);
+        }
+        curl_close($api_info);
+        $data = json_decode($response, true);
+
+        return $data["data"];
+    }
+
     function getGuessLimit() {
         // TODO - Retrieve number of guesses from admin settings. (Per professor, the number
         // of guesses is set by the admin and not chosen by the player). This value is used

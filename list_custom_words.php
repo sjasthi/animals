@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Animals Table</title>
+        <title>Custom Words Table</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/animals.css">
@@ -46,11 +46,11 @@
                 <a href="index.php"><img src="images/back_icon.png" alt="Back Icon" style="Display:Block;width:70px;height:70px;"></a>
             </div>
             <div id="add_button">
-                <a href="create_word.php"><img src="images/add_icon.png" alt="Add Icon" style="Display:Block;width:70px;height:70px;"></a>
+                <a href="create_custom_word.php"><img src="images/add_icon.png" alt="Add Icon" style="Display:Block;width:70px;height:70px;"></a>
             </div>
         </div>
         <div id="game_title">
-            <p>Puzzle Word List</p>
+            <p>Custom Word List</p>
         </div>
         <div id="secondary_screen_logo">
             <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
@@ -58,7 +58,7 @@
     </header>
     <body style="background-color:#f2edf2">
 
-<?php $page_title = 'Animals > puzzle word list';
+<?php $page_title = 'Animals > custom word list';
 ?>
 
 <!-- Page Content -->
@@ -70,9 +70,9 @@
             <div class="table responsive">
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Word</th>
-                    <th>Date</th>
-                    <th>Time</th>
+                    <th>Email</th>
                     <th>Winning Plays</th>
                     <th>Total Plays</th>
                     <th>Modify</th>
@@ -82,9 +82,9 @@
                 <tbody>
                 <div>
                     <strong> Toggle column: </strong> 
-                    <a id="toggle" class="toggle-vis" data-column="0">Word</a> - 
-                    <a id="toggle" class="toggle-vis" data-column="1">Date</a> - 
-                    <a id="toggle" class="toggle-vis" data-column="2">Time</a> - 
+                    <a id="toggle" class="toggle-vis" data-column="0">ID</a> - 
+                    <a id="toggle" class="toggle-vis" data-column="1">Word</a> - 
+                    <a id="toggle" class="toggle-vis" data-column="2">Email</a> - 
                     <a id="toggle" class="toggle-vis" data-column="3">Winning Plays</a> - 
                     <a id="toggle" class="toggle-vis" data-column="4">Total Plays</a> - 
                     <a id="toggle" class="toggle-vis" data-column="5">Modify</a> - 
@@ -93,28 +93,28 @@
                 
                 <?php
                 $conn = mysqli_connect("localhost", "root", "", "ics499_animals");
-                $sql = "SELECT * FROM puzzle_words";
+                $sql = "SELECT * FROM custom_words";
                 $result = $conn->query($sql);
 
                 // fetch the data from $_GLOBALS
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while($row = $result->fetch_assoc()) {
+                    $id = $row["Id"];
                     $word = $row["word"];
-                    $date = $row["date"];
-                    $time = $row["time"];
+                    $email = $row["Email"];
                     $winning_plays = $row["winning_plays"];
                     $total_plays = $row["total_plays"];
 
                 ?>
                 <tr>
-                    <td><?php echo $word; ?></td>
-                    <td><div contenteditable="true" onBlur="updateValue(this,'date','<?php echo $word; ?>')"><?php echo $date; ?></div></span> </td>
-                    <td><div contenteditable="true" onBlur="updateValue(this,'time','<?php echo $word; ?>')"><?php echo $time; ?></div></span> </td>
-                    <td><div contenteditable="true" onBlur="updateValue(this,'winning_plays','<?php echo $word; ?>')"><?php echo $winning_plays ?></div></span> </td>
-                    <td><div contenteditable="true" onBlur="updateValue(this,'total_plays','<?php echo $word; ?>')"><?php echo $total_plays; ?></div></span> </td>
-                    <?php echo '<td><a class="btn btn-warning btn-sm" href="update_word.php?id='.$row["word"].'">Modify</a></td>' ?>
-                    <?php echo '<td><a class="btn btn-danger btn-sm" href="delete.php?rn='.$row["word"].'">Delete</a></td>' ?>
+                    <td><?php echo $id; ?></td>
+                    <td><div contenteditable="true" onBlur="updateValue(this,'word','<?php echo $id; ?>')"><?php echo $word; ?></div></span> </td>
+                    <td><div contenteditable="true" onBlur="updateValue(this,'Email','<?php echo $id; ?>')"><?php echo $email; ?></div></span> </td>
+                    <td><div contenteditable="true" onBlur="updateValue(this,'winning_plays','<?php echo $id; ?>')"><?php echo $winning_plays ?></div></span> </td>
+                    <td><div contenteditable="true" onBlur="updateValue(this,'total_plays','<?php echo $id; ?>')"><?php echo $total_plays; ?></div></span> </td>
+                    <?php echo '<td><a class="btn btn-warning btn-sm" href="update_custom_word.php?id='.$row["Id"].'">Modify</a></td>' ?>
+                    <?php echo '<td><a class="btn btn-danger btn-sm" href="delete_custom_word.php?rn='.$row["Id"].'">Delete</a></td>' ?>
                 </tr>
                  <?php  //end while
                 }//end if
@@ -225,7 +225,7 @@
 function updateValue(element,column,id){
         var value = element.innerText
         $.ajax({
-            url:'editable_list.php',
+            url:'editable_custom_list.php',
             type: 'post',
             data:{
                 value: value,

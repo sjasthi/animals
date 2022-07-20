@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/animals.css">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
-        <script type="text/javascript" src="js/animals.js"></script>    
+        <script type="text/javascript" src="js/animals.js"></script>
         <style>
             td {
                 font-family: Arial, Helvetica, sans-serif;
@@ -76,7 +76,7 @@
                     <a id="profile_menu_3" href="#">Puzzle Word List</a>
                     <a id="profile_menu_4" href="#">Custom Word List</a>
                     <!--<a id="profile_menu_5" href="https://www.telugupuzzles.com/login.php" target="_blank" onclick=logInOut()>Log In</a>-->
-                    <a id="profile_menu_5" href="#" onclick=logInOut()>Log In</a>
+                    <a id="profile_menu_5" href="#" onclick=logIn()>Log In</a>
                 </div>
             </div>
         </div>
@@ -153,8 +153,29 @@ in the correct positon, the third character is in the word but not in the correc
 
         <script>
             // Javascript function to pull puzzle_word details and build UI tables
-            pullWord();
-            buildTables();
+            <?php
+                if(isset($_GET['id'])) {
+                    $conn = mysqli_connect("localhost", "root", "", "ics499_animals");
+                    $id = $_GET['id'];
+                    $sql = "SELECT * FROM custom_words
+                            WHERE id = '$id'";
+                    $result = $conn->query($sql);
+                
+                    if ($result -> num_rows > 0) {
+                      while ($row = $result->fetch_assoc()) {
+                        $word=$row["word"];
+                    }//end if
+                    $conn -> close(); 
+                }//end if
+            ?>
+                var word = "<?php echo $word; ?>";
+                fillWord(word);
+            <?php } else { ?>
+                pullWord();
+            <?php } ?>
+
+            //buildTables();
+            loadGame();
 
             /* These functions make the dropdown menus and modals appear. They weren't working from the external
             file, so I put them here. */
