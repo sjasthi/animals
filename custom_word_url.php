@@ -78,8 +78,8 @@
                     }//end if
 
                     if ($found) {
-                        echo "<br><h1 style='text-align:center'>Word already exists in database.</h1><br><h2 style='text-align:center'>URL:<br><a href='play_custom_word.php?id=".$id."'>localhost/animalsTest/play_custom_word.php?id=".$id."</a></h2>";
-                    } else {
+                        echo "<br><h1 style='text-align:center'>Word already exists in database.</h1><br><h2 style='text-align:center'>URL:<br><a href='index.php?id=".$id."'>localhost/animals/?id=".$id."</a></h2>";
+                   } else {
                         $INSERT = "INSERT INTO custom_words(word, email, total_plays, winning_plays) values(?, ?, 0, 0)";            
 
                         $stmt = $conn->prepare($INSERT);
@@ -99,7 +99,7 @@
                                 $id=$row["Id"];
                             }
                         }//end if
-                        echo "<br><h1 style='text-align:center'>Custom Word inserted into database.</h1><br><h2 style='text-align:center'>URL:<br><a href='play_custom_word.php?id=".$id."'>localhost/animalsTest/play_custom_word.php?id=".$id."</a></h2>";
+                        echo "<br><h1 style='text-align:center'>Custom Word inserted into database.</h1><br><h2 style='text-align:center'>URL:<br><a href='index.php?id=".$id."'>localhost/animals/?id=".$id."</a></h2>";
 
                 }
                     $conn -> close(); 

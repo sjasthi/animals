@@ -97,8 +97,6 @@
         
                     $new_time = $_POST['new_time'];
                     $new_date = $_POST['new_date'];
-                    $new_winning_plays = $_POST['new_winning_plays'];
-                    $new_total_plays = $_POST['new_total_plays'];
        
                     $host = "localhost";
                     $dbUsername = "root";
@@ -125,24 +123,6 @@
                         }
                         $stmt->close();
                     } 
-                    if ($new_total_plays != "") {
-                        $UPDATE = "UPDATE puzzle_words SET total_plays=? WHERE word=?";            
-                        $stmt = $conn->prepare($UPDATE);
-                        $stmt->bind_param("is", $new_total_plays, $word);
-                        if (! $stmt->execute()) {
-                            echo $stmt->error;
-                        }
-                        $stmt->close();
-                    }
-                    if ($new_winning_plays != "") {
-                        $UPDATE = "UPDATE puzzle_words SET winning_plays=? WHERE word=?";            
-                        $stmt = $conn->prepare($UPDATE);
-                        $stmt->bind_param("is", $new_winning_plays, $word);
-                        if (! $stmt->execute()) {
-                            echo $stmt->error;
-                        }
-                        $stmt->close();
-                    }
 
                     $conn->close();
 
