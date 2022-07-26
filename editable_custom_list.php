@@ -1,6 +1,6 @@
 <?php
-    $conn = mysqli_connect("localhost", "root", "", "ics499_animals");
-
+    require 'db_configuration.php';
+    $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
 
 
     $value = $_POST['value'];

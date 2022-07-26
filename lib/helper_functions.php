@@ -1,5 +1,7 @@
 <?php
 
+    require '../db_configuration.php';    
+
     // These conditionals are taking the method name and args sent by the ajax code in animals.js
     // and turning them into function call statements.
     if(count($_POST) == 1) {
@@ -16,6 +18,50 @@
         $arg2 = $_POST["arg2"];
         $arg3 = $_POST["arg3"];
         echo $_POST["method"]($arg1, $arg2, $arg3);
+    }
+
+    function incrementCustomTotal($puzzle_word) {
+        $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
+
+        $sql2 = "UPDATE custom_words SET total_plays = total_plays + 1 WHERE word = ?";
+        $stmt = $conn->prepare($sql2);
+        $stmt->bind_param("s", $puzzle_word);
+        $stmt->execute();
+
+        $conn -> close(); 
+    }
+
+    function incrementPuzzleTotal($puzzle_word) {
+        $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
+
+        $sql2 = "UPDATE puzzle_words SET total_plays = total_plays + 1 WHERE word = ?";
+        $stmt = $conn->prepare($sql2);
+        $stmt->bind_param("s", $puzzle_word);
+        $stmt->execute();
+
+        $conn -> close(); 
+    }
+
+    function updateCustomWin($puzzle_word) {
+        $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
+
+        $sql2 = "UPDATE custom_words SET winning_plays = winning_plays + 1 WHERE word = ?";
+        $stmt = $conn->prepare($sql2);
+        $stmt->bind_param("s", $puzzle_word);
+        $stmt->execute();
+
+        $conn -> close(); 
+    }
+
+    function updatePuzzleWin($puzzle_word) {
+        $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
+
+        $sql2 = "UPDATE puzzle_words SET winning_plays = winning_plays + 1 WHERE word = ?";
+        $stmt = $conn->prepare($sql2);
+        $stmt->bind_param("s", $puzzle_word);
+        $stmt->execute();
+
+        $conn -> close(); 
     }
 
     // Function for checking user before login.  API currently isn't functional, so don't call this method yet.
@@ -73,7 +119,7 @@
     function getWord() {
         date_default_timezone_set('America/Chicago');
         $date = date("Y-m-d");
-        $conn = mysqli_connect("localhost", "root", "", "ics499_animals");
+        $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
         if(date("H") >= 8 && date("H") < 20) {
             $sql = "SELECT word FROM puzzle_words WHERE date = '$date' AND time = '08:00:00'";
         } else {

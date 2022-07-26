@@ -8,27 +8,21 @@ let animal = "";
 let pictureFile = "";
 let gameResult = "";
 let userRole = "";
+const admins = ["marc.wedo@gmail.com", "jmhuddock09@gmail.com", "olsonjeremy33@yahoo.com"];
+const userInfo = [];
+const userStats = [];
 const tableData = [];
-//let accessLevel = "guest";
 
 /* Function which fills word with input. Used for custom plays
 */
-function fillWord(word) {
+function fillCustomWord(word) {
     puzzleWord = word;
     customWord = true;
 }
 
-/* Function to pull puzzleWord. This function uses ajax to call helper_functions.php method
-to load the puzzleWord from the database. */
-function pullWord() {
-    $.ajax({
-        async: false,
-        url: "lib/helper_functions.php",
-        type: "POST",
-        data: {method: "getWord"}
-    }).done(function(data) {
-        puzzleWord = data;
-    });
+function fillPuzzleWord(word) {
+    puzzleWord = word;
+    customWord = false;
 }
 
 function loadGame() {
@@ -192,22 +186,108 @@ function loadSaveData(saveData) {
     }
 }
 
-function logIn() {
-    let role = "admin";                  // role will eventually be assigned from an API call.
-    setCookie("userRole", role, 1);
-    updateMenus();
+function loadUserStats() {
+    let userStatsCookieData = getCookie("userStats");
+    if(userStatsCookieData != "") {
+        let userStatsData = JSON.parse(userStatsCookieData);
+        document.getElementById("games_played").innerHTML = userStatsData[0];
+        document.getElementById("games_won").innerHTML = userStatsData[1];
+        document.getElementById("win_percent").innerHTML = userStatsData[2];
+        document.getElementById("current_streak").innerHTML = userStatsData[3];
+        document.getElementById("max_streak").innerHTML = userStatsData[4];
+    } else {
+        document.getElementById("games_played").innerHTML = 0;
+        document.getElementById("games_won").innerHTML = 0;
+        document.getElementById("win_percent").innerHTML = 0;
+        document.getElementById("current_streak").innerHTML = 0;
+        document.getElementById("max_streak").innerHTML = 0;
+    }
+}
+
+function processLogin() {
+    let userEmail = "";
+    let userPassword = "";
+    let userExists;
+    let validLogin;
+    let role;
+
+    userEmail = document.getElementById("email_field").value;
+    userPassword = document.getElementById("password_field").value;
+
+    // API call to check if email belongs to registered user
+    $.ajax({
+        async: false,
+        url: "lib/helper_functions.php",
+        type: "POST",
+        data: {method: "checkUser", arg: userEmail}
+    }).done(function(data) {
+        userExists = data;
+    });
+
+    if(userExists) {
+        // API call to check if email/password combination are valid
+        $.ajax({
+            async: false,
+            url: "lib/helper_functions.php",
+            type: "POST",
+            data: {method: "wsLogin", arg1: userEmail, arg2: userPassword}
+        }).done(function(data) {
+            validLogin = data;
+        });
+
+        if(validLogin) {
+            // API call to get the role for the player who just logged in
+            $.ajax({
+                async: false,
+                url: "lib/helper_functions.php",
+                type: "POST",
+                data: {method: "getRole", arg: userEmail}
+            }).done(function(data) {
+                role = data;
+            });
+    
+            userInfo.push(userEmail);
+            userInfo.push("yes");
+            //userInfo.push(role);              // This line could be used instead of the IF/ELSE block below in production.
+            if(admins.includes(userEmail)) {    // This IF/ELSE is so group members can be logged in as admin rather than users.
+                userInfo.push("ADMIN");
+            } else {
+                userInfo.push(role);
+            }
+            let userInfoString = JSON.stringify(userInfo);
+            setCookie("userInfo", userInfoString, 90);
+
+            document.getElementById("login_message").innerHTML = "";
+    
+            window.location.href = "index.php";
+            updateMenus();
+        } else {
+            document.getElementById("login_message").innerHTML = "This is not the correct password for this email!";
+            document.getElementById("password_field").value = "";
+        }
+
+    } else {
+        document.getElementById("login_message").innerHTML = 
+            "If you are not registered, please go to <a href='https://www.telugupuzzles.com/login.php'>www.telugupuzzles.com</a> and register!";
+            document.getElementById("email_field").value = "";
+            document.getElementById("password_field").value = "";
+    }
 }
 
 function logOut() {
-    let role = "guest";
-    setCookie("userRole", role, 1);
+    let userCookieData = getCookie("userInfo");
+    if(userCookieData != "") {
+        let userData = JSON.parse(userCookieData);
+        userData[2] = "GUEST";          // If cookie exists, update role in cookie to GUEST
+        let userInfoString = JSON.stringify(userData);
+        setCookie("userInfo", userInfoString, 90);
+    } else {
+        userRole = "GUEST";             // If no cookie, update to GUEST menus
+    }
     updateMenus();
 }
 
 /*
-settings_menu_1 -> Access Level: <userRole> (Informational message)
-settings_menu_2 -> Set # of Guesses
-settings_menu_3 -> Set Language
 profile_menu_1 -> Access Level: <userRole> (Informational message)
 profile_menu_2 -> Create Custom Word
 profile_menu_3 -> Puzzle Word List
@@ -215,48 +295,40 @@ profile_menu_4 -> Custom Word List
 profile_menu_5 -> Log In/Log Out
 */
 function updateMenus() {
-    // Check for a userRole cookie
-    let role = getCookie("userRole");
-    if(role != "") {
-        userRole = role;        // If cookie exists, update to appropriate menus
+    // Check for a userInfo cookie
+    let userCookieData = getCookie("userInfo");
+    if(userCookieData != "") {
+        let userData = JSON.parse(userCookieData);
+        userRole = userData[2];        // If cookie exists, update to appropriate menus
     } else {
-        userRole = "guest";     // If no cookie, update to "guest" menus
+        userRole = "GUEST";             // If no cookie, update to "guest" menus
     }
 
     // Update menus
-    if (userRole == "guest") {
-        document.getElementById("settings_menu_1").innerHTML = "Access Level: GUEST";
-        document.getElementById("settings_menu_2").setAttribute('href', "#");                       // No access to set guesses
-        document.getElementById("settings_menu_3").setAttribute('href', "#");                       // No access to set languages
+    if (userRole == "GUEST") {
         document.getElementById("profile_menu_1").innerHTML = "Access Level: GUEST";
         document.getElementById("profile_menu_2").setAttribute('href', "#");                        // No access to create custom word
         document.getElementById("profile_menu_3").setAttribute('href', "#");                        // No access to puzzle word list
         document.getElementById("profile_menu_4").setAttribute('href', "#");                        // No access to custom word list
         document.getElementById("profile_menu_5").innerHTML = "Log In";
-        document.getElementById("profile_menu_5").setAttribute('href', "#");                        // Guest will be able to log in
-        document.getElementById("profile_menu_5").setAttribute('onclick', "logIn()");
-    } else if (userRole == "member") {
-        document.getElementById("settings_menu_1").innerHTML = "Access Level: MEMBER";
-        document.getElementById("settings_menu_2").setAttribute('href', "#");                       // No access to set guesses
-        document.getElementById("settings_menu_3").setAttribute('href', "#");                       // No access to set language
-        document.getElementById("profile_menu_1").innerHTML = "Access Level: MEMBER";
+        document.getElementById("profile_menu_5").setAttribute('href', "login_page.php");
+        document.getElementById("profile_menu_5").setAttribute('onclick', "");                      // Guest will be able to log in
+    } else if (userRole == "USER") {
+        document.getElementById("profile_menu_1").innerHTML = "Access Level: USER";
         document.getElementById("profile_menu_2").setAttribute('href', "add_custom_word.php");      // Member will have access to create custom word
         document.getElementById("profile_menu_3").setAttribute('href', "#");                        // No access to puzzle word list
         document.getElementById("profile_menu_4").setAttribute('href', "#");                        // Member will have access to custom word list (only that user's words)
         document.getElementById("profile_menu_5").innerHTML = "Log Out";
         document.getElementById("profile_menu_5").setAttribute('href', "#");                        // Member will be able to log out
-        document.getElementById("profile_menu_5").setAttribute('onclick', "logOut()");
-    } else if (userRole == "admin") {
-        document.getElementById("settings_menu_1").innerHTML = "Access Level: ADMIN";
-        document.getElementById("settings_menu_2").setAttribute('href', "#");                       // Admin will have access to set guesses
-        document.getElementById("settings_menu_3").setAttribute('href', "#");                       // Admin will have access to set language
+        document.getElementById("profile_menu_5").setAttribute('onclick', "logOut();return false;");
+    } else if (userRole == "ADMIN") {
         document.getElementById("profile_menu_1").innerHTML = "Access Level: ADMIN";
         document.getElementById("profile_menu_2").setAttribute('href', "add_custom_word.php");      // Admin will have access to create custom word
         document.getElementById("profile_menu_3").setAttribute('href', "list_words.php");           // Admin will have access to puzzle word list
         document.getElementById("profile_menu_4").setAttribute('href', "list_custom_words.php");    // Admin will have access to custom world list (all words?)
         document.getElementById("profile_menu_5").innerHTML = "Log Out";
         document.getElementById("profile_menu_5").setAttribute('href', "#");                        // Admin will be able to log out
-        document.getElementById("profile_menu_5").setAttribute('onclick', "logOut()"); 
+        document.getElementById("profile_menu_5").setAttribute('onclick', "logOut();return false;"); 
     } else {
         alert("Unable to build menus. No access level data available.");
     }
@@ -347,20 +419,27 @@ function processGuess() {
                 "<img src=" + pictureFile + " alt=" + animal + ' style="width:40px;height:auto;">';
         }
         document.getElementById("input_box").value = "";
-        if(numberOfAttempts < guessLimit) {
-            if(matchString == "11111" || matchString == "1111" || matchString == "111") {
-                gameResult = "win";
-                document.getElementById("game_message").innerHTML =
-                    "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p><p>Click here to copy the image.</p>";
-            }
-        }
-        if (numberOfAttempts == guessLimit) {
-            if(matchString == "11111" || matchString == "1111" || matchString == "111") {
-                gameResult = "win";
-                document.getElementById("game_message").innerHTML =
-                    "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p><p>Click here to copy the image.</p>";
+        if(matchString == "11111" || matchString == "1111" | matchString == "111") {
+            gameResult = "win";
+            if(customWord) {
+                updateCustomWin();
+                incrementCustomTotal();
             } else {
+                updatePuzzleWin();
+                incrementPuzzleTotal();
+                updateStats(gameResult);
+            }
+            document.getElementById("game_message").innerHTML =
+                "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p><p>Click here to copy the image.</p>";
+        } else {
+            if (numberOfAttempts == guessLimit) {
                 gameResult = "loss";
+                if(customWord) {
+                    incrementCustomTotal();
+                } else {
+                    incrementPuzzleTotal();
+                    updateStats(gameResult);
+                }
                 document.getElementById("game_message").innerHTML =
                     "<p></p><p>Sorry! You have run out of guesses...</p><p>The puzzle word was: " + puzzleWord + 
                     "</p><p>Click here to share your puzzle on social media.</p>";
@@ -420,9 +499,12 @@ function selectAnimal(language, id) {
     }
 }
 
+// tableData cookies are created with an expiration that is a timestamp for a specific date/time (the time when
+// that puzzle word "expires"). Other cookies are created with an expiration that is a number of days from
+// the current day.  That is the reason of the if/else code in this function.
 function setCookie(cname, cvalue, expiration) {
     let expires = "expires=";
-    if (customWord || cname == "userRole") {
+    if (cname != "tableData") {
         const d = new Date();
         d.setTime(d.getTime() + (expiration * 24 * 60 * 60 * 1000));
         expires = expires + d.toUTCString();
@@ -463,5 +545,102 @@ function generateCookieExpiration() {
         tomorrowDate.setDate(todayDate.getDate() + 1);
         tomorrowDate.setHours(8, 0, 0);
         return tomorrowDate;
+    }
+}
+
+function updateCustomWin() {
+    $.ajax({
+        async: false,
+        url: "lib/helper_functions.php",
+        type: "POST",
+        data: {method: "updateCustomWin", arg: puzzleWord}
+    });
+}
+
+function updatePuzzleWin() {
+    $.ajax({
+        async: false,
+        url: "lib/helper_functions.php",
+        type: "POST",
+        data: {method: "updatePuzzleWin", arg: puzzleWord}
+    });
+}
+
+function pullWord() {
+    $.ajax({
+        async: false,
+        url: "lib/helper_functions.php",
+        type: "POST",
+        data: {method: "getWord"}
+    }).done(function(data) {
+        puzzleWord = data;
+    });
+}
+
+function incrementCustomTotal() {
+    $.ajax({
+        async: false,
+        url: "lib/helper_functions.php",
+        type: "POST",
+        data: {method: "incrementCustomTotal", arg: puzzleWord}
+    });
+}
+
+function incrementPuzzleTotal() {
+    $.ajax({
+        async: false,
+        url: "lib/helper_functions.php",
+        type: "POST",
+        data: {method: "incrementPuzzleTotal", arg: puzzleWord}
+    });
+}
+
+/* userStats cookie data is an array:
+userStats[0] = games_played
+userStats[1] = games_won
+userStats[2] = win_percent
+userStats[3] = current_streak
+userStats[4] = max_streak */
+function updateStats(gameMessage) {
+    let userStatsCookieData = getCookie("userStats");
+    if(userStatsCookieData != "") {
+        let userStatsData = JSON.parse(userStatsCookieData);
+        if(gameMessage == "win") {
+            userStatsData[0] = userStatsData[0] + 1;
+            userStatsData[1] = userStatsData[1] + 1;
+            userStatsData[2] = Math.round((userStatsData[1] / userStatsData[0]) * 100);
+            userStatsData[3] = userStatsData[3] + 1;
+            if(userStatsData[3] == userStatsData[4] + 1) {
+                userStatsData[4] = userStatsData[4] + 1;
+            } else if (userStatsData[3] > userStatsData[4] + 1) {
+                alert("Error! Current streak is more than 1 higher than max streak. Check streak incrementation!");
+            }
+        } else if (gameMessage == "loss") {
+            userStatsData[0] = userStatsData[0] + 1;
+            userStatsData[2] = Math.round((userStatsData[1] / userStatsData[0]) * 100);
+            userStatsData[3] = 0;
+        } else {
+            alert("Error! Game message is '" + gameMessage + "' and it should be 'win' or 'loss'!");
+        }
+        let userStatsString = JSON.stringify(userStatsData);
+        setCookie("userStats", userStatsString, 90);
+    } else {
+        if(gameMessage == "win") {
+            userStats[0] = 1;
+            userStats[1] = 1;
+            userStats[2] = Math.round((userStatsData[1] / userStatsData[0]) * 100);
+            userStats[3] = 1;
+            userStats[4] = 1;
+        } else if (gameMessage == "loss") {
+            userStats[0] = 1;
+            userStats[1] = 0;
+            userStats[2] = Math.round((userStatsData[1] / userStatsData[0]) * 100);
+            userStats[3] = 0;
+            userStats[4] = 0;
+        } else {
+            alert("Error! Game message is '" + gameMessage + "' and it should be 'win' or 'loss'!");
+        }
+        let userStatsString = JSON.stringify(userStats);
+        setCookie("userStats", userStatsString, 90);
     }
 }

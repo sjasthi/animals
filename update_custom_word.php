@@ -1,7 +1,8 @@
-<?php
 
+<?php
+require 'db_configuration.php';
 if (isset($_GET['id'])){
-    $conn = mysqli_connect("localhost", "root", "", "ics499_animals");
+    $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
     $id = $_GET['id'];
     $sql = "SELECT * FROM custom_Words
             WHERE Id = '$id'";

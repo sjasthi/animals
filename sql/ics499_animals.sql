@@ -40,13 +40,13 @@ CREATE TABLE `custom_words` (
 --
 
 INSERT INTO `custom_words` (`Id`, `word`, `Email`, `total_plays`, `winning_plays`) VALUES
-(1, 'hello', 'jeremy', 0, 0),
-(2, 'slow', 'jeremy', 0, 0),
-(3, 'jelly', 'ols', 0, 0),
-(4, 'chess', 'me', 0, 0),
-(5, 'వువువ', 'me', 0, 0),
-(6, 'hey', 'lik', 0, 0),
-(7, 'jule', 'hey', 0, 0);
+(1, 'hello', 'olsonjeremy33@yahoo.com', 0, 0),
+(2, 'slow', 'olsonjeremy33@yahoo.com', 0, 0),
+(3, 'jelly', 'marc.wedo@gmail.com', 0, 0),
+(4, 'chess', 'marc.wedo@gmail.com', 0, 0),
+(5, 'వువువ', 'marc.wedo@gmail.com', 0, 0),
+(6, 'hey', 'jmhuddock09@gmail.com', 0, 0),
+(7, 'jule', 'jmhuddock@gmail.com', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -83,7 +83,7 @@ CREATE TABLE `puzzle_words` (
 INSERT INTO `puzzle_words` (`word`, `date`, `time`, `total_plays`, `winning_plays`) VALUES
 ('ankle', '2022-07-06', '08:00:00', 0, 0),
 ('ant', '2022-07-10', '08:00:00', 0, 0),
-('ape', '0005-05-05', '05:05:00', 1, 1),
+('ape', '0005-05-05', '05:05:00', 0, 0),
 ('bad', '2022-07-04', '08:00:00', 0, 0),
 ('blind', '2022-07-09', '08:00:00', 0, 0),
 ('block', '2022-07-12', '08:00:00', 0, 0),

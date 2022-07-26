@@ -1,3 +1,6 @@
+<?php
+    require 'db_configuration.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -19,6 +22,10 @@
                 border-style: none;
                 cursor: pointer;
             }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
             .dropdown-content {
                 display: none;
                 position: absolute;
@@ -34,7 +41,8 @@
                 display: block;
             }
             .dropdown-content a:hover {background-color: #ddd;}
-            .show {display:block;}
+            .dropdown:hover .dropdown-content {display: block;}
+            .dropdown:hover .dropbtn {background-color: #ddd;}
         </style>
     </head>
 
@@ -56,18 +64,8 @@
                     <img src="images/stat_icon.png" alt="Stat Icon" style="Display:Block;width:70px;height:70px;">
                 </button>
             </div>
-            <div id="settings_button">
-                <button onclick="showSettingsDropdown()" class="dropbtn">
-                    <img src="images/settings_icon.png" alt="Settings Icon" style="Display:Block;width:70px;height:70px;">
-                </button>
-                <div id="settings_dropdown" class="dropdown-content">
-                    <p id="settings_menu_1">Access Level: GUEST</p>
-                    <a id="settings_menu_2" href="#">Set # of Guesses</a>
-                    <a id="settings_menu_3" href="#">Set Language</a>
-                </div>
-            </div>
-            <div id="profile_button">
-                <button onclick="showProfileDropdown()" class="dropbtn">
+            <div id="profile_button" class="dropdown">
+                <button class="dropbtn">
                     <img src="images/profile_icon.png" alt="Profile Icon" style="Display:Block;width:70px;height:70px;">
                 </button>
                 <div id="profile_dropdown" class="dropdown-content">
@@ -75,8 +73,7 @@
                     <a id="profile_menu_2" href="#">Create Custom Word</a>
                     <a id="profile_menu_3" href="#">Puzzle Word List</a>
                     <a id="profile_menu_4" href="#">Custom Word List</a>
-                    <!--<a id="profile_menu_5" href="https://www.telugupuzzles.com/login.php" target="_blank" onclick=logInOut()>Log In</a>-->
-                    <a id="profile_menu_5" href="#" onclick=logIn()>Log In</a>
+                    <a id="profile_menu_5" href="login_page.php">Log In</a>
                 </div>
             </div>
         </div>
@@ -145,9 +142,21 @@ in the correct positon, the third character is in the word but not in the correc
         <div id="stat_modal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <p>Coming Soon!</p>
-                <p>Statistics page...</p>
-                <p><img src="images/frog.png" alt="Frog" style="width:70px;height:70px;vertical-align:middle;"></p>
+                <div id="stat_modal_title"><p>STATISTICS</p></div>
+                <div id="stat_values">
+                    <div id="games_played" class="stat_value">0</div>
+                    <div id="games_won" class="stat_value">0</div>
+                    <div id="win_percent" class="stat_value">0</div>
+                    <div id="current_streak" class="stat_value">0</div>
+                    <div id="max_streak" class="stat_value">0</div>
+                </div>
+                <div id="stat_labels">
+                    <div id="games_played_label" class="stat_label">Played</div>
+                    <div id="games_won_label" class="stat_label">Won</div>
+                    <div id="win_percent_label" class="stat_label">Win %</div>
+                    <div id="current_streak_label" class="stat_label">Current Streak</div>
+                    <div id="max_streak_label" class="stat_label">Max Streak</div>
+                </div>  
             </div>
         </div>
 
@@ -155,7 +164,7 @@ in the correct positon, the third character is in the word but not in the correc
             // Javascript function to pull puzzle_word details and build UI tables
             <?php
                 if(isset($_GET['id'])) {
-                    $conn = mysqli_connect("localhost", "root", "", "ics499_animals");
+                    $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
                     $id = $_GET['id'];
                     $sql = "SELECT * FROM custom_words
                             WHERE id = '$id'";
@@ -163,35 +172,46 @@ in the correct positon, the third character is in the word but not in the correc
                 
                     if ($result -> num_rows > 0) {
                       while ($row = $result->fetch_assoc()) {
-                        $word=$row["word"];
+                        $customWord=$row["word"];
                     }//end if
+
                     $conn -> close(); 
                 }//end if
             ?>
-                var word = "<?php echo $word; ?>";
-                fillWord(word);
-            <?php } else { ?>
-                pullWord();
+                var word = "<?php echo $customWord; ?>";
+                fillCustomWord(word);
+            <?php } else {
+                date_default_timezone_set('America/Chicago');
+                $date = date("Y-m-d");
+                
+                $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
+                if(date("H") >= 8 && date("H") < 20) {
+                    $sql = "SELECT word FROM puzzle_words WHERE date = '$date' AND time = '08:00:00'";
+                } else {
+                    $sql = "SELECT word FROM puzzle_words WHERE date = '$date' AND time = '20:00:00'";
+                }
+                $result = $conn->query($sql);
+                $row = $result->fetch_assoc();
+                $puzzleWord = $row["word"];
+
+                $conn->close();
+
+                $puzzleWord = $row["word"]; ?>
+                    var word = "<?php echo $puzzleWord; ?>";
+                    fillPuzzleWord(word);
             <?php } ?>
 
-            //buildTables();
             loadGame();
 
-            /* These functions make the dropdown menus and modals appear. They weren't working from the external
+            /* These functions make modals appear. They weren't working from the external
             file, so I put them here. */
-            function showProfileDropdown() {
-                document.getElementById("profile_dropdown").classList.toggle("show");
-            }
-
-            function showSettingsDropdown() {
-                document.getElementById("settings_dropdown").classList.toggle("show");
-            }
 
             function showHelpModal() {
                 document.getElementById("help_modal").style.display = "block";
             }
 
             function showStatModal() {
+                loadUserStats();
                 document.getElementById("stat_modal").style.display = "block";
             }
 
