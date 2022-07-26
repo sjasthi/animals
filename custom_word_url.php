@@ -1,3 +1,6 @@
+<?php
+	require 'db_configuration.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -62,49 +65,77 @@
 <br><br>
     
     <?php
-                    $conn = mysqli_connect("localhost", "root", "", "ics499_animals");
+                    //$conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);                    
                     $word = $_POST['word'];
-                    $email = $_POST['email'];
-                    $found = False;
+                    $api_info = curl_init("https://wpapi.telugupuzzles.com/api/getLangForString.php?input1={$word}");
+                    curl_setopt($api_info, CURLOPT_RETURNTRANSFER, true);
+                    $response = curl_exec($api_info);
+                    $encoding = mb_detect_encoding($response);
+                    if($encoding == "UTF-8") {
+                        $response = preg_replace('/[^(\x20-\x7F)]*/','', $response);
+                    }
+                    curl_close($api_info);
+                    $data = json_decode($response, true);
+                    $language = $data['data'];
 
-                    $sql = "SELECT * FROM custom_words WHERE word = '$word'";
-                    $result = $conn->query($sql);
-                
-                    if ($result -> num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                            $id=$row["Id"];
-                            $found = True;
-                        }
-                    }//end if
+                    $api_info = curl_init("https://wpapi.telugupuzzles.com/api/getLength.php?string={$word}&language={$language}");
+                    curl_setopt($api_info, CURLOPT_RETURNTRANSFER, true);
+                    $response = curl_exec($api_info);
+                    $encoding = mb_detect_encoding($response);
+                    if($encoding == "UTF-8") {
+                        $response = preg_replace('/[^(\x20-\x7F)]*/','', $response);
+                    }
+                    curl_close($api_info);
+                    $data = json_decode($response, true);
+                    $length = $data['data'];
+                    if ($length < 3 || $length > 5) {
+                        echo "<br><h1 style='text-align:center'>Words must be 3 to 5 characters.</h1><br><h2 style='text-align:center'><a href = 'add_custom_word.php'>Go back</a></h2>";
+                    } else {
+                        
+                        $tmp = explode('"', $_COOKIE['userInfo']);
+                        $email = $tmp[1];
+                        $found = False;
 
-                    if ($found) {
-                        echo "<br><h1 style='text-align:center'>Word already exists in database.</h1><br><h2 style='text-align:center'>URL:<br><a href='index.php?id=".$id."'>localhost/animals/?id=".$id."</a></h2>";
-                   } else {
-                        $INSERT = "INSERT INTO custom_words(word, email, total_plays, winning_plays) values(?, ?, 0, 0)";            
-
-                        $stmt = $conn->prepare($INSERT);
-                        $stmt->bind_param("ss", $word, $email);
-                        if ($stmt->execute()) {
-                            echo "<br><p style='text-align:center'>New record inserted sucessfully.<p><br>";
-                        }
-                        else {
-                            
-                        }
-
+                        $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
                         $sql = "SELECT * FROM custom_words WHERE word = '$word'";
                         $result = $conn->query($sql);
                     
                         if ($result -> num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
+                          while ($row = $result->fetch_assoc()) {
                                 $id=$row["Id"];
+                                $found = True;
                             }
                         }//end if
-                        echo "<br><h1 style='text-align:center'>Custom Word inserted into database.</h1><br><h2 style='text-align:center'>URL:<br><a href='index.php?id=".$id."'>localhost/animals/?id=".$id."</a></h2>";
-
-                }
-                    $conn -> close(); 
-
-
+    
+                        if ($found) {
+                            echo "<br><h1 style='text-align:center'>Word already exists in database.</h1><br><h2 style='text-align:center'>URL:<br><a href='index.php?id=".$id."'>localhost/animals/?id=".$id."</a></h2>";
+                       } else {
+                            $INSERT = "INSERT INTO custom_words(word, email, total_plays, winning_plays) values(?, ?, 0, 0)";            
+    
+                            $stmt = $conn->prepare($INSERT);
+                            $stmt->bind_param("ss", $word, $email);
+                            if ($stmt->execute()) {
+                                echo "<br><p style='text-align:center'>New record inserted sucessfully.<p><br>";
+                            }
+                            else {
+                                
+                            }
+    
+                            $sql = "SELECT * FROM custom_words WHERE word = '$word'";
+                            $result = $conn->query($sql);
+                        
+                            if ($result -> num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                    $id=$row["Id"];
+                                }
+                            }//end if
+                            echo "<br><h1 style='text-align:center'>Custom Word inserted into database.</h1><br><h2 style='text-align:center'>URL:<br><a href='index.php?id=".$id."'>localhost/animals/?id=".$id."</a></h2>";
+    
+                    }
+                        $conn -> close(); 
+                    }
+                
+                    //$email = $_POST['email'];
     ?>
 
 </body>

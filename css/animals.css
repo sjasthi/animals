@@ -31,8 +31,8 @@ header {
 
 #menu_buttons {
     position: absolute;
-    margin: 20px 20px 20px 1470px;
-    width: 400px;
+    margin: 20px 20px 20px 1550px;
+    width: 300px;
     height: 80px;
     white-space: nowrap;
 }
@@ -47,15 +47,6 @@ header {
 }
 
 #stat_button {
-    display:inline-block;
-    margin: 5px 5px 5px 0px;
-    width: 70px;
-    height: 70px;
-    border: 2px solid lightgrey;
-    border-radius: 5px;
-}
-
-#settings_button {
     display:inline-block;
     margin: 5px 5px 5px 0px;
     width: 70px;
@@ -107,6 +98,7 @@ header {
 }
 
 #game_panel {
+    background-color: darkblue;
     position: absolute;
     margin-left: 540px;
     width: 825px;
@@ -193,6 +185,43 @@ form {
     background-color:royalblue;
 }
 
+#stat_modal_title {
+    width: 100%;
+    height: 50px;
+    padding-top: 30px;
+    text-align: center;
+    font-size: 24px;
+}
+
+#stat_values {
+    width: 100%;
+    height: 80px;
+    text-align: center;
+}
+
+#stat_labels {
+    width: 100%;
+    height: 80px;
+    text-align: center;
+}
+
+.stat_value {
+    display: inline-block;
+    width: 100px;
+    height: 45px;
+    padding-top: 30px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.stat_label {
+    display: inline-block;
+    width: 100px;
+    height: 75px;
+    text-align: center;
+    font-size: 12px;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -205,31 +234,31 @@ form {
     overflow: auto;
     background-color: rgb(0,0,0);
     background-color: rgba(0,0,0,0.4);
-  }
+}
   
-  .modal-content {
+.modal-content {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
     width: 40%;
-  }
+}
   
-  .close {
+.close {
     color: #aaaaaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
-  }
+}
   
-  .close:hover,
-  .close:focus {
+.close:hover,
+.close:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
-  }
+}
 
-  .button {
+.button {
     border: 0;
     outline: none;
     border-radius: 0;
@@ -243,26 +272,87 @@ form {
     -webkit-transition: all 0.5s ease;
     transition: all 0.5s ease;
     -webkit-appearance: none;
-  }
-  .button:hover, .button:focus {
-    background: #179b77;
-  }
+}
 
-  .top-row:after {
+.button:hover, .button:focus {
+    background: #179b77;
+}
+
+.top-row:after {
     content: "";
     display: table;
     clear: both;
-  }
-  .top-row > div {
+}
+
+.top-row > div {
     float: left;
     width: 48%;
     margin-right: 4%;
-  }
-  .top-row > div:last-child {
+}
+
+.top-row > div:last-child {
     margin: 0;
-  }
+}
   
-  .button-block {
+.button-block {
     display: block;
     width: 100%;
-  }
+}
+
+#body_panel {
+    width: 100%;
+    height: 550px;
+    text-align: center;
+    font-size: 24px;
+}
+
+#login_panel {
+    background-color: white;
+    position: absolute;
+    padding-top: 40px;
+    margin-top: 40px;
+    margin-left: 700px;
+    width: 500px;
+    height: 500px;
+    text-align: center;
+    font-size: 24px;
+    border-style: double;
+    border-width: 10px;
+    border-color: goldenrod;
+}
+
+#email_field {
+    margin: 20px;
+    padding-left: 10px;
+    height: 50px;
+    width: 400px;
+    font-size: 24px;
+}
+
+#password_field {
+    margin: 20px;
+    padding-left: 10px;
+    height: 50px;
+    width: 400px;
+    font-size: 24px;
+}
+
+#login_submit_button {
+    margin-top: 20px;
+    width: 100px;
+    height: 50px;
+    font-size: 24px;
+    color:white;
+    background-color:royalblue;
+}
+
+#login_message {
+    margin-top: 20px;
+    margin-left: 45px;
+    padding-top: 20px;
+    text-align:center;
+    font-size: 24px;
+    height: 100px;
+    width: 400px;
+    color:red;
+}

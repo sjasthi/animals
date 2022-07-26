@@ -40,17 +40,8 @@
                         Enter Custom Word:                     
                     </td>
                     <td>
-                        <input type="text" minlength="3" maxlength="5" name="word" required>
+                        <input type="text" name="word" required>
                     </td>
-                </tr>
-                <tr>
-                    <td>
-                        Enter Your Email Address:                     
-                    </td>
-                    <td>
-                        <input type="text" name="email" required>
-                    </td>
-                </tr>
 
                 <tr>
                     <td>
