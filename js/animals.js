@@ -321,7 +321,7 @@ function updateMenus() {
         document.getElementById("profile_menu_5").innerHTML = "Log Out";
         document.getElementById("profile_menu_5").setAttribute('href', "#");                        // Member will be able to log out
         document.getElementById("profile_menu_5").setAttribute('onclick', "logOut();return false;");
-    } else if (userRole == "ADMIN") {
+    } else if (userRole == "ADMIN" || userRole == "SUPER_ADMIN") {
         document.getElementById("profile_menu_1").innerHTML = "Access Level: ADMIN";
         document.getElementById("profile_menu_2").setAttribute('href', "add_custom_word.php");      // Admin will have access to create custom word
         document.getElementById("profile_menu_3").setAttribute('href', "list_words.php");           // Admin will have access to puzzle word list
@@ -628,13 +628,13 @@ function updateStats(gameMessage) {
         if(gameMessage == "win") {
             userStats[0] = 1;
             userStats[1] = 1;
-            userStats[2] = Math.round((userStatsData[1] / userStatsData[0]) * 100);
+            userStats[2] = Math.round((userStats[1] / userStats[0]) * 100);
             userStats[3] = 1;
             userStats[4] = 1;
         } else if (gameMessage == "loss") {
             userStats[0] = 1;
             userStats[1] = 0;
-            userStats[2] = Math.round((userStatsData[1] / userStatsData[0]) * 100);
+            userStats[2] = Math.round((userStats[1] / userStats[0]) * 100);
             userStats[3] = 0;
             userStats[4] = 0;
         } else {
