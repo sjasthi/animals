@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 13, 2022 at 02:07 AM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 8.0.9
+-- Generation Time: Jul 27, 2022 at 01:29 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,13 +40,11 @@ CREATE TABLE `custom_words` (
 --
 
 INSERT INTO `custom_words` (`Id`, `word`, `Email`, `total_plays`, `winning_plays`) VALUES
-(1, 'hello', 'olsonjeremy33@yahoo.com', 0, 0),
-(2, 'slow', 'olsonjeremy33@yahoo.com', 0, 0),
-(3, 'jelly', 'marc.wedo@gmail.com', 0, 0),
-(4, 'chess', 'marc.wedo@gmail.com', 0, 0),
-(5, 'వువువ', 'marc.wedo@gmail.com', 0, 0),
-(6, 'hey', 'jmhuddock09@gmail.com', 0, 0),
-(7, 'jule', 'jmhuddock@gmail.com', 0, 0);
+(1, 'test', 'marc.wedo@gmail.com', 0, 0),
+(2, 'exam', 'john.doe@gmail.com', 0, 0),
+(3, 'final', 'marc.wedo@gmail.com', 1, 1),
+(4, 'hello', 'marc.wedo@gmail.com', 1, 1),
+(5, 'mule', 'marc.wedo@gmail.com', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -83,7 +81,6 @@ CREATE TABLE `puzzle_words` (
 INSERT INTO `puzzle_words` (`word`, `date`, `time`, `total_plays`, `winning_plays`) VALUES
 ('ankle', '2022-07-06', '08:00:00', 0, 0),
 ('ant', '2022-07-10', '08:00:00', 0, 0),
-('ape', '0005-05-05', '05:05:00', 0, 0),
 ('bad', '2022-07-04', '08:00:00', 0, 0),
 ('blind', '2022-07-09', '08:00:00', 0, 0),
 ('block', '2022-07-12', '08:00:00', 0, 0),
@@ -100,17 +97,18 @@ INSERT INTO `puzzle_words` (`word`, `date`, `time`, `total_plays`, `winning_play
 ('get', '2022-07-07', '08:00:00', 0, 0),
 ('half', '2022-07-23', '08:00:00', 0, 0),
 ('hay', '2022-07-19', '08:00:00', 0, 0),
-('index', '2022-07-24', '08:00:00', 0, 0),
+('index', '2022-07-24', '08:00:00', 5, 4),
 ('late', '2022-07-08', '08:00:00', 0, 0),
 ('mole', '2022-08-01', '08:00:00', 0, 0),
 ('muggy', '2022-08-02', '08:00:00', 0, 0),
-('open', '2022-07-26', '08:00:00', 0, 0),
-('pitch', '2022-07-21', '08:00:00', 0, 0),
+('open', '2022-07-26', '08:00:00', 9, 8),
+('pitch', '2022-07-21', '08:00:00', 3, 2),
 ('quota', '2022-07-30', '08:00:00', 0, 0),
 ('reign', '2022-07-27', '08:00:00', 0, 0),
 ('relax', '2022-07-18', '08:00:00', 0, 0),
 ('south', '2022-07-15', '08:00:00', 0, 0),
 ('sun', '2022-07-22', '08:00:00', 0, 0),
+('test', '2022-08-05', '08:00:00', 0, 0),
 ('wrap', '2022-07-14', '08:00:00', 0, 0),
 ('అత్తయ్య', '2022-07-10', '20:00:00', 0, 0),
 ('అనాసపండు', '2022-07-15', '20:00:00', 0, 0),
@@ -124,7 +122,7 @@ INSERT INTO `puzzle_words` (`word`, `date`, `time`, `total_plays`, `winning_play
 ('చెన్నపట్నము', '2022-08-02', '20:00:00', 0, 0),
 ('జాస్తిశివయ్య', '2022-07-21', '20:00:00', 0, 0),
 ('తింగరోడు', '2022-07-11', '20:00:00', 0, 0),
-('దమ్ముబిర్యాని', '2022-07-24', '20:00:00', 0, 0),
+('దమ్ముబిర్యాని', '2022-07-24', '20:00:00', 9, 8),
 ('దొండకాయ', '2022-07-05', '20:00:00', 0, 0),
 ('నాడీకేంద్రం', '2022-07-20', '20:00:00', 0, 0),
 ('పాడుగోల', '2022-07-23', '20:00:00', 0, 0),
@@ -173,7 +171,7 @@ ALTER TABLE `puzzle_words`
 -- AUTO_INCREMENT for table `custom_words`
 --
 ALTER TABLE `custom_words`
-  MODIFY `Id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `Id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
