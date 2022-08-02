@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="css/animals.css">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
         <script type="text/javascript" src="js/animals.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
         <style>
             td {
                 font-family: Arial, Helvetica, sans-serif;
@@ -70,9 +71,9 @@
                 </button>
                 <div id="profile_dropdown" class="dropdown-content">
                     <p id="profile_menu_1">Access Level: GUEST</p>
-                    <a id="profile_menu_2" href="#">Create Custom Word</a>
-                    <a id="profile_menu_3" href="#">Puzzle Word List</a>
-                    <a id="profile_menu_4" href="#">Custom Word List</a>
+                    <p id="profile_menu_2" style="color:darkGray">Create Custom Word</p>
+                    <p id="profile_menu_3" style="color:darkGray">Puzzle Word List</p>
+                    <p id="profile_menu_4" style="color:darkGray">Custom Word List</p>
                     <a id="profile_menu_5" href="login_page.php">Log In</a>
                 </div>
             </div>
@@ -80,6 +81,9 @@
     </header>
 
     <body onload=updateMenus() style="background-color:darkblue">
+        <div id="clue_box">
+
+        </div>
         <div id="game_panel">
             <div id="character_tile_panel">
                 <table id="character_table"></table>
@@ -102,7 +106,6 @@
         <div id="help_modal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <h2>Animals!</h2>
                 <pre>
 Check the info box on the right for the puzzle word language and number of guesses.
 The number of boxes in a row on the table indicate the length of the puzzle word.
@@ -117,25 +120,34 @@ are in the correct location, one character is in the puzzle word but not in the 
 two characters are not in the puzzle word at all.  But it does not mean the first two characters are
 in the correct positon, the third character is in the word but not in the correct position, etc.
                 </pre>
-                <h3>English:</h3>
-                <div><img src="images/bull.png" alt="Bull" style="width:50px;height:50px;vertical-align:middle;">
+                <h4>English:</h4>
+                <div><img src="images/bull.png" alt="Bull" style="width:40px;height:40px;vertical-align:middle;">
                     <span>One of the characters is in the word, and in the correct position.</span></div>
-                <div><img src="images/cow.png" alt="Cow" style="width:50px;height:50px;vertical-align:middle;">
+                <div><img src="images/cow.png" alt="Cow" style="width:40px;height:40px;vertical-align:middle;">
                     <span>One of the characters is in the word, but in the wrong position.</span></div>
-                <div><img src="images/mouse.png" alt="Mouse" style="width:50px;height:50px;vertical-align:middle;">
+                <div><img src="images/mouse.png" alt="Mouse" style="width:40px;height:40px;vertical-align:middle;">
                     <span>One of the characters is not in the word.</span></div>
                 <p></p>
-                <h3>Telugu:</h3>
-                <div><img src="images/elephant.png" alt="Elephant" style="width:50px;height:50px;vertical-align:middle;">
+                <h4>Telugu:</h4>
+                <div><img src="images/elephant.png" alt="Elephant" style="width:40px;height:40px;vertical-align:middle;">
                     <span>One of the logical characters is in the word, and in the correct position.</span></div>
-                <div><img src="images/fish.png" alt="Fish" style="width:50px;height:50px;vertical-align:middle;">
+                <div><img src="images/fish.png" alt="Fish" style="width:40px;height:40px;vertical-align:middle;">
                     <span>One of the logical characters is in the word, but in the wrong position.</span></div>
-                <div><img src="images/horse.png" alt="Horse" style="width:50px;height:50px;vertical-align:middle;">
+                <div><img src="images/horse.png" alt="Horse" style="width:40px;height:40px;vertical-align:middle;">
                     <span>One of the base characters is in the word, and in the correct position.</span></div>
-                <div><img src="images/frog.png" alt="Frog" style="width:50px;height:50px;vertical-align:middle;">
+                <div><img src="images/frog.png" alt="Frog" style="width:40px;height:40px;vertical-align:middle;">
                     <span>One of the base characters is in the word, but in the wrong position.</span></div>
-                <div><img src="images/mouse.png" alt="Mouse" style="width:50px;height:50px;vertical-align:middle;">
+                <div><img src="images/mouse.png" alt="Mouse" style="width:40px;height:40px;vertical-align:middle;">
                     <span>One of the logical characters is not in the word.</span></div>
+                <p></p>
+                <h4>About:</h4>
+                <pre>
+Animals: Version 1
+This game was created as part of the ICS-499 course at Metropolitan State University, St. Paul, MN.
+Marc Wedo       marc.wedo@gmail.com
+Jeremy Olson    olsonjeremy33@yahoo.com
+Jace Huddock    jmhuddock09@gmail.com
+                </pre>
             </div>
         </div>
 
@@ -159,6 +171,37 @@ in the correct positon, the third character is in the word but not in the correc
                 </div>  
             </div>
         </div>
+
+        <script>
+            // Javascript function to take a screenshot of the completed game
+            function screenshot(){ 
+                if(userRole == "ADMIN" || userRole == "SUPER_ADMIN") {  
+                    html2canvas(document.querySelector("#game_panel")).then(canvas => {
+                        var myImage = canvas.toDataURL("image/png");
+                        var tWindow = window.open("");
+                    $(tWindow.document.body)
+                        .html("<img id='Image' src=" + myImage + "></img>")
+                        .ready(function() {
+                        tWindow.focus();
+                        //tWindow.print();
+                        //document.body.appendChild(canvas)
+                        });
+                    });
+                } else {
+                    html2canvas(document.querySelector("#animal_tile_panel")).then(canvas => {
+                        var myImage = canvas.toDataURL("image/png");
+                        var tWindow = window.open("");
+                    $(tWindow.document.body)
+                        .html("<img id='Image' src=" + myImage + "></img>")
+                        .ready(function() {
+                        tWindow.focus();
+                        //tWindow.print();
+                        //document.body.appendChild(canvas)
+                        });
+                    });
+                }
+            }
+        </script>
 
         <script>
             // Javascript function to pull puzzle_word details and build UI tables
