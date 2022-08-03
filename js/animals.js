@@ -103,6 +103,7 @@ function buildTables() {
         tableRows = tableRows + "<tr>" + cells + "</tr>";
     }
 
+    document.getElementById("clue_box").innerHTML = "<p></p><p>Click <a href='#' onclick='loadClue()'>here</a> to see a clue!</p>";
     document.getElementById("character_table").innerHTML = tableRows;
     document.getElementById("animal_table").innerHTML = tableRows;
     document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
@@ -162,15 +163,33 @@ function loadSaveData(saveData) {
     if(latestResultString == "11111" || latestResultString == "1111" || latestResultString == "111") {
         gameResult = "win";
         document.getElementById("game_message").innerHTML =
-                    "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p><p>Click here to copy the image.</p>";
+                    "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p>" +
+                    "<p>Click <a href='javascript:screenshot();'>here</a> to copy the image.</p>";
     } else {
         if(numberOfWords == guessLimit) {
             gameResult = "loss";
             document.getElementById("game_message").innerHTML =
                     "<p></p><p>Sorry! You have run out of guesses...</p><p>The puzzle word was: " + puzzleWord +
-                     "</p><p>Click here to share your puzzle on social media.</p>";
+                     "</p><p>Click <a href='javascript:screenshot();'>here</a> to share your puzzle on social media.</p>";
         } else {
             gameResult = "";
+
+            let userCookieData = getCookie("userInfo");
+            if(userCookieData != "") {
+                let userData = JSON.parse(userCookieData);
+                userRole = userData[2];
+            } else {
+                userRole = "GUEST";
+            }
+
+            if(userRole == "ADMIN" || userRole == "SUPER_ADMIN") {
+                document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
+                    "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p>" +
+                    "<p>Click <a href='javascript:screenshot();'>here</a> to share the puzzle in progress!</p>";
+            } else {
+                document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
+                    "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p><p>Good luck!</p>";
+            }
         }
     }
     // Re-creating the cookie so that prior data and any additional guesses (if possible) will be available if player leaves and returns.
@@ -304,31 +323,28 @@ function updateMenus() {
         userRole = "GUEST";             // If no cookie, update to "guest" menus
     }
 
-    // Update menus
-    if (userRole == "GUEST") {
-        document.getElementById("profile_menu_1").innerHTML = "Access Level: GUEST";
-        document.getElementById("profile_menu_2").setAttribute('href', "#");                        // No access to create custom word
-        document.getElementById("profile_menu_3").setAttribute('href', "#");                        // No access to puzzle word list
-        document.getElementById("profile_menu_4").setAttribute('href', "#");                        // No access to custom word list
-        document.getElementById("profile_menu_5").innerHTML = "Log In";
-        document.getElementById("profile_menu_5").setAttribute('href', "login_page.php");
-        document.getElementById("profile_menu_5").setAttribute('onclick', "");                      // Guest will be able to log in
-    } else if (userRole == "USER") {
-        document.getElementById("profile_menu_1").innerHTML = "Access Level: USER";
-        document.getElementById("profile_menu_2").setAttribute('href', "add_custom_word.php");      // Member will have access to create custom word
-        document.getElementById("profile_menu_3").setAttribute('href', "#");                        // No access to puzzle word list
-        document.getElementById("profile_menu_4").setAttribute('href', "#");                        // Member will have access to custom word list (only that user's words)
-        document.getElementById("profile_menu_5").innerHTML = "Log Out";
-        document.getElementById("profile_menu_5").setAttribute('href', "#");                        // Member will be able to log out
-        document.getElementById("profile_menu_5").setAttribute('onclick', "logOut();return false;");
-    } else if (userRole == "ADMIN" || userRole == "SUPER_ADMIN") {
-        document.getElementById("profile_menu_1").innerHTML = "Access Level: ADMIN";
-        document.getElementById("profile_menu_2").setAttribute('href', "add_custom_word.php");      // Admin will have access to create custom word
-        document.getElementById("profile_menu_3").setAttribute('href', "list_words.php");           // Admin will have access to puzzle word list
-        document.getElementById("profile_menu_4").setAttribute('href', "list_custom_words.php");    // Admin will have access to custom world list (all words?)
-        document.getElementById("profile_menu_5").innerHTML = "Log Out";
-        document.getElementById("profile_menu_5").setAttribute('href', "#");                        // Admin will be able to log out
-        document.getElementById("profile_menu_5").setAttribute('onclick', "logOut();return false;"); 
+    // update menus
+    if(userRole == "GUEST") {
+        document.getElementById("profile_dropdown").innerHTML =
+            "<p id='profile_menu_1'>Access Level: GUEST</p>" +
+            "<p id='profile_menu_2' style='color:darkGray'>Create Custom Word</p>" +
+            "<p id='profile_menu_3' style='color:darkGray'>Puzzle Word List</p>" +
+            "<p id='profile_menu_4' style='color:darkGray'>Custom Word List</p>" +
+            "<a id='profile_menu_5' href='login_page.php'>Log In</a>";
+    } else if(userRole == "USER") {
+        document.getElementById("profile_dropdown").innerHTML =
+            "<p id='profile_menu_1'>Access Level: USER</p>" +
+            "<a id='profile_menu_2' href='add_custom_word.php' style='color:black'>Create Custom Word</a>" +
+            "<p id='profile_menu_3' style='color:darkGray'>Puzzle Word List</p>" +
+            "<a id='profile_menu_4' href='list_custom_words.php' style='color:#black'>Custom Word List</a>" +
+            "<a id='profile_menu_5' href='#' onclick='logOut();return false;'>Log Out</a>";
+    } else if(userRole == "ADMIN" || userRole == "SUPER_ADMIN") {
+        document.getElementById("profile_dropdown").innerHTML =
+            "<p id='profile_menu_1'>Access Level: ADMIN</p>" +
+            "<a id='profile_menu_2' href='add_custom_word.php' style='color:black'>Create Custom Word</a>" +
+            "<a id='profile_menu_3' href='list_words.php' style='color:black'>Puzzle Word List</a>" +
+            "<a id='profile_menu_4' href='list_custom_words.php' style='color:black'>Custom Word List</a>" +
+            "<a id='profile_menu_5' href='#' onclick='logOut();return false;'>Log Out</a>";
     } else {
         alert("Unable to build menus. No access level data available.");
     }
@@ -430,7 +446,8 @@ function processGuess() {
                 updateStats(gameResult);
             }
             document.getElementById("game_message").innerHTML =
-                "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p><p>Click here to copy the image.</p>";
+                "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p>" +
+                "<p>Click <a href='javascript:screenshot();'>here</a> to copy the image.</p>";
         } else {
             if (numberOfAttempts == guessLimit) {
                 gameResult = "loss";
@@ -442,7 +459,16 @@ function processGuess() {
                 }
                 document.getElementById("game_message").innerHTML =
                     "<p></p><p>Sorry! You have run out of guesses...</p><p>The puzzle word was: " + puzzleWord + 
-                    "</p><p>Click here to share your puzzle on social media.</p>";
+                    "</p><p>Click <a href='javascript:screenshot();'>here</a> to share your puzzle on social media.</p>";
+            } else {                                                                                            // new  else for screenshot
+                if(userRole == "ADMIN" || userRole == "SUPER_ADMIN") {
+                    document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
+                        "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p>" +
+                        "<p>Click <a href='javascript:screenshot();'>here</a> to share the puzzle in progress!</p>";
+                } else {
+                    document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
+                        "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p><p>Good luck!</p>";
+                }
             }
         }
         // tableData array is used to store the characters for character_table and the integers that are used
@@ -642,5 +668,23 @@ function updateStats(gameMessage) {
         }
         let userStatsString = JSON.stringify(userStats);
         setCookie("userStats", userStatsString, 90);
+    }
+}
+
+function loadClue() {
+    let puzzleWordClue;
+    $.ajax({
+        async: false,
+        url: "lib/helper_functions.php",
+        type: "POST",
+        data: {method: "getClue"}
+    }).done(function(data) {
+        puzzleWordClue = data;
+    });
+
+    if(puzzleWordClue != "") {
+        document.getElementById("clue_box").innerHTML = "<p></p><p>Your clue is:</p><p>" + puzzleWordClue + "</p>";
+    } else {
+        document.getElementById("clue_box").innerHTML = "<p></p><p>Sorry! There is no clue for this word!</p><p>Please guess the word.</p>";
     }
 }
