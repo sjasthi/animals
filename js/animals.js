@@ -117,6 +117,7 @@ function loadSaveData(saveData) {
     let wordLength = savedTableData[0].length;
     let numberOfWords = savedTableData.length / 2;
     let wordLanguage;
+    let noMatch = false;
 
     // Set numberOfAttempts in case the loaded game is unfinished and the player resumes play.
     numberOfAttempts = (savedTableData.length / 2) + 1;
@@ -132,20 +133,32 @@ function loadSaveData(saveData) {
     });
 
     // These variables are the index of the first array of characters and animal values. The cookie data is
-    // an array of arrays: [[chars] [ints] [chars] [ints]]. The first two arrays are for the first table row,
-    // the next two are for the second table row, and so on. These vars are incremented by 2 each loop so the
+    // an array of arrays: [[chars] [ints] [chars] [ints]]. The first two arrays are for the first table rows,
+    // the next two are for the second table rows, and so on. These vars are incremented by 2 each loop so the
     // correct data is pulled
     let characterIndex = 0;
     let animalIndex = 1;
     
     // Populate tables with character and animal data
     for(var r = 0; r < numberOfWords; r++) {
-        for(var c = 0; c < wordLength; c++) {
-            selectAnimal(wordLanguage, savedTableData[animalIndex][c]);
-            pictureFile = "images/" + animal + ".png";
-            document.getElementById("character_table").rows[r].cells[c].innerHTML = savedTableData[characterIndex][c].toUpperCase();
-            document.getElementById("animal_table").rows[r].cells[c].innerHTML =
-                "<img src=" + pictureFile + " alt=" + animal + ' style="width:40px;height:auto;">';
+        if(wordLanguage == "English") {
+            for(var c = 0; c < wordLength; c++) {
+                document.getElementById("character_table").rows[r].cells[c].innerHTML = savedTableData[characterIndex][c].toUpperCase();
+                selectAnimal(wordLanguage, savedTableData[animalIndex][c]);
+                pictureFile = "images/" + animal + ".png";
+                document.getElementById("animal_table").rows[r].cells[c].innerHTML =
+                    "<img src=" + pictureFile + " alt=" + animal + ' style="width:40px;height:auto;">';
+            }
+        } else {
+            for(var c = 0; c < wordLength; c++) {
+                document.getElementById("character_table").rows[r].cells[c].innerHTML = savedTableData[characterIndex][c].toUpperCase();
+                if((savedTableData[animalIndex][c] == "5" && c == 0) || (savedTableData[animalIndex][c] != "5")) {
+                    selectAnimal(wordLanguage, savedTableData[animalIndex][c]);
+                    pictureFile = "images/" + animal + ".png";
+                    document.getElementById("animal_table").rows[r].cells[c].innerHTML =
+                        "<img src=" + pictureFile + " alt=" + animal + ' style="width:40px;height:auto;">';
+                }
+            }
         }
         characterIndex += 2;
         animalIndex += 2;
@@ -360,6 +373,7 @@ function processGuess() {
     let guessWordLength;
     let logicalChars;
     let matchString = "";
+    let noMatch = false;
     guessWord = document.getElementById("input_box").value.toLowerCase();
 
     // API call to get language of guess word
@@ -424,18 +438,34 @@ function processGuess() {
         matchString += sorted[i];
     }
 
+    if (matchString.charAt(0) == "5") {
+        noMatch = true;
+    }
+
     // These IF/ELSE blocks handle the logical chars and match string integers from the APIs and use them
     // to populate the tables.
     if(numberOfAttempts <= guessLimit && gameResult == "") {
-        for(var c = 0; c < puzzleWordLength; c += 1) {
-            selectAnimal(guessWordLanguage, matchString.charAt(c));
-            pictureFile = "images/" + animal + ".png";
-            document.getElementById("character_table").rows[numberOfAttempts - 1].cells[c].innerHTML = logicalChars[c].toUpperCase();
-            document.getElementById("animal_table").rows[numberOfAttempts - 1].cells[c].innerHTML =
-                "<img src=" + pictureFile + " alt=" + animal + ' style="width:40px;height:auto;">';
+        if (guessWordLanguage == "English") {
+            for(var c = 0; c < puzzleWordLength; c += 1) {
+                document.getElementById("character_table").rows[numberOfAttempts - 1].cells[c].innerHTML = logicalChars[c].toUpperCase();
+                selectAnimal(guessWordLanguage, matchString.charAt(c));
+                pictureFile = "images/" + animal + ".png";
+                document.getElementById("animal_table").rows[numberOfAttempts - 1].cells[c].innerHTML =
+                    "<img src=" + pictureFile + " alt=" + animal + ' style="width:40px;height:auto;">';
+            }
+        } else {
+            for(var c = 0; c < puzzleWordLength; c += 1) {
+                document.getElementById("character_table").rows[numberOfAttempts - 1].cells[c].innerHTML = logicalChars[c].toUpperCase();
+                if((noMatch && c == 0) || (!noMatch && matchString.charAt(c) != "5")) {
+                    selectAnimal(guessWordLanguage, matchString.charAt(c));
+                    pictureFile = "images/" + animal + ".png";
+                    document.getElementById("animal_table").rows[numberOfAttempts - 1].cells[c].innerHTML =
+                        "<img src=" + pictureFile + " alt=" + animal + ' style="width:40px;height:auto;">';
+                }
+            }
         }
         document.getElementById("input_box").value = "";
-        if(matchString == "11111" || matchString == "1111" | matchString == "111") {
+        if(matchString == "11111" || matchString == "1111" || matchString == "111") {
             gameResult = "win";
             if(customWord) {
                 updateCustomWin();
@@ -682,9 +712,13 @@ function loadClue() {
         puzzleWordClue = data;
     });
 
-    if(puzzleWordClue != "") {
-        document.getElementById("clue_box").innerHTML = "<p></p><p>Your clue is:</p><p>" + puzzleWordClue + "</p>";
+    if(customWord) {
+        document.getElementById("clue_box").innerHTML = "<p></p><p>Sorry! Custom Words don't have clues!</p><p>You're on your own for this one!</p>"
     } else {
-        document.getElementById("clue_box").innerHTML = "<p></p><p>Sorry! There is no clue for this word!</p><p>Please guess the word.</p>";
+        if(puzzleWordClue != "") {
+            document.getElementById("clue_box").innerHTML = "<p></p><p>Your clue is:</p><p>" + puzzleWordClue + "</p>";
+        } else {
+            document.getElementById("clue_box").innerHTML = "<p></p><p>Sorry! There is no clue for this word!</p><p>Please guess the word.</p>";
+        }
     }
 }

@@ -33,7 +33,7 @@
 
     <body style="background-color:#f2edf2">
         <p style="text-align:center">Words must be 3 to 5 characters</p>
-        <form action="custom_word_url.php" method="POST">
+        <form action="custom_word_url.php" method="POST" autocomplete="off">
             <table style="color:black; margin-left:auto; margin-right: auto;">
                 <tr>
                     <td>

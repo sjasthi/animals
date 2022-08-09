@@ -9,6 +9,7 @@
                     <th>Time</th>
                     <th>Winning Plays</th>
                     <th>Total Plays</th>
+                    <th>Clue</th>
                     <th>Modify</th>
                     <th>Delete</th>
                 </tr>
@@ -21,6 +22,7 @@
                     <a id="toggle" class="toggle-vis" data-column="2">Time</a> - 
                     <a id="toggle" class="toggle-vis" data-column="3">Winning Plays</a> - 
                     <a id="toggle" class="toggle-vis" data-column="4">Total Plays</a> - 
+                    <a id="toggle" class="toggle-vis" data-column="5">Clue</a> - 
                     <a id="toggle" class="toggle-vis" data-column="5">Modify</a> - 
                     <a id="toggle" class="toggle-vis" data-column="6">Delete</a> -
                 </div> <br>
@@ -39,6 +41,7 @@
                     $time = $row["time"];
                     $winning_plays = $row["winning_plays"];
                     $total_plays = $row["total_plays"];
+                    $clue = $row['clue'];
 
                 ?>
                 <tr>
@@ -47,6 +50,7 @@
                     <td><div contenteditable="true" onBlur="updateValue(this,'time','<?php echo $word; ?>')"><?php echo $time; ?></div></span> </td>
                     <td><div contenteditable="true" onBlur="updateValue(this,'winning_plays','<?php echo $word; ?>')"><?php echo $winning_plays ?></div></span> </td>
                     <td><div contenteditable="true" onBlur="updateValue(this,'total_plays','<?php echo $word; ?>')"><?php echo $total_plays; ?></div></span> </td>
+                    <td><div contenteditable="true" onBlur="updateValue(this,'clue','<?php echo $word; ?>')"><?php echo $clue; ?></div></span> </td>
                     <?php echo '<td><a class="btn btn-warning btn-sm" href="update_word.php?id='.$row["word"].'">Modify</a></td>' ?>
                     <?php echo '<td><a class="btn btn-danger btn-sm" href="delete.php?rn='.$row["word"].'">Delete</a></td>' ?>
                 </tr>

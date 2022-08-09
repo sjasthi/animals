@@ -39,7 +39,7 @@
                         Enter Word:                     
                     </td>
                     <td>
-                        <input type="text" name="word" required>
+                        <input type="text" name="word" autocomplete="off" required>
                     </td>
                 </tr>
                 <tr>
