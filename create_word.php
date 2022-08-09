@@ -32,7 +32,7 @@
     </header>
 
     <body style="background-color:#f2edf2">
-        <form action="insert.php" method="POST">
+        <form action="insert.php" method="POST" autocomplete="off">
             <table style="color:black; margin-left:auto; margin-right: auto;">
                 <tr>
                     <td>

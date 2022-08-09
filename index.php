@@ -138,7 +138,7 @@ in the correct positon, the third character is in the word but not in the correc
                 <div><img src="images/frog.png" alt="Frog" style="width:40px;height:40px;vertical-align:middle;">
                     <span>One of the base characters is in the word, but in the wrong position.</span></div>
                 <div><img src="images/mouse.png" alt="Mouse" style="width:40px;height:40px;vertical-align:middle;">
-                    <span>One of the logical characters is not in the word.</span></div>
+                    <span>None of the base or logical characters are in the word.</span></div>
                 <p></p>
                 <h4>About:</h4>
                 <pre>

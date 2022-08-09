@@ -37,4 +37,11 @@
                 </div>
             </div>
         </div>
+        <script>
+            let userCookieData = getCookie("userInfo");
+            if(userCookieData != "") {
+                let userData = JSON.parse(userCookieData);
+                document.getElementById("email_field").value = userData[0];
+            }
+        </script>
     </body>
