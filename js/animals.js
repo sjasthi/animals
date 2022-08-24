@@ -31,7 +31,11 @@ function loadGame() {
     buildTables();
 
     if(customWord) {
-        let saveData = getCookie("customTableData");
+        const urlParams = new URLSearchParams(location.search);
+        const valueIterator = urlParams.values();
+        let id = valueIterator.next().value;
+        let cname = "customTableData" + id;
+        let saveData = getCookie(cname);
         if(saveData != "") {
             loadSaveData(saveData);     // If cookie exists, call loadSaveData to re-create tables
         }
@@ -176,14 +180,22 @@ function loadSaveData(saveData) {
     if(latestResultString == "11111" || latestResultString == "1111" || latestResultString == "111") {
         gameResult = "win";
         document.getElementById("game_message").innerHTML =
-                    "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p>" +
-                    "<p>Click <a href='javascript:screenshot();'>here</a> to copy the image.</p>";
+            "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p>" +
+            "<p>Click <a href='javascript:screenshot();'>here</a> to copy the image.</p>";
+        document.getElementById("submission_panel").innerHTML =
+            '<form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false;">' +
+            '<input id="input_box" type="text" name="input_box" disabled>' +
+            '<input id="submit_button" type="submit" value="Submit" name="submit" style="background-color:grey" disabled></form>';
     } else {
         if(numberOfWords == guessLimit) {
             gameResult = "loss";
             document.getElementById("game_message").innerHTML =
-                    "<p></p><p>Sorry! You have run out of guesses...</p><p>The puzzle word was: " + puzzleWord +
-                     "</p><p>Click <a href='javascript:screenshot();'>here</a> to share your puzzle on social media.</p>";
+                "<p></p><p>Sorry! You have run out of guesses...</p><p>The puzzle word was: " + puzzleWord +
+                "</p><p>Click <a href='javascript:screenshot();'>here</a> to share your puzzle on social media.</p>";
+            document.getElementById("submission_panel").innerHTML =
+                '<form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false;">' +
+                '<input id="input_box" type="text" name="input_box" disabled>' +
+                '<input id="submit_button" type="submit" value="Submit" name="submit" style="background-color:grey" disabled></form>';
         } else {
             gameResult = "";
 
@@ -347,14 +359,14 @@ function updateMenus() {
     } else if(userRole == "USER") {
         document.getElementById("profile_dropdown").innerHTML =
             "<p id='profile_menu_1'>Access Level: USER</p>" +
-            "<a id='profile_menu_2' href='add_custom_word.php' style='color:black'>Create Custom Word</a>" +
+            "<a id='profile_menu_2' href='create_custom_word.php' style='color:black'>Create Custom Word</a>" +
             "<p id='profile_menu_3' style='color:darkGray'>Puzzle Word List</p>" +
             "<a id='profile_menu_4' href='list_custom_words.php' style='color:#black'>Custom Word List</a>" +
             "<a id='profile_menu_5' href='#' onclick='logOut();return false;'>Log Out</a>";
     } else if(userRole == "ADMIN" || userRole == "SUPER_ADMIN") {
         document.getElementById("profile_dropdown").innerHTML =
             "<p id='profile_menu_1'>Access Level: ADMIN</p>" +
-            "<a id='profile_menu_2' href='add_custom_word.php' style='color:black'>Create Custom Word</a>" +
+            "<a id='profile_menu_2' href='create_custom_word.php' style='color:black'>Create Custom Word</a>" +
             "<a id='profile_menu_3' href='list_words.php' style='color:black'>Puzzle Word List</a>" +
             "<a id='profile_menu_4' href='list_custom_words.php' style='color:black'>Custom Word List</a>" +
             "<a id='profile_menu_5' href='#' onclick='logOut();return false;'>Log Out</a>";
@@ -375,6 +387,8 @@ function processGuess() {
     let matchString = "";
     let noMatch = false;
     guessWord = document.getElementById("input_box").value.toLowerCase();
+    guessWord = guessWord.trim();
+
 
     // API call to get language of guess word
     $.ajax({
@@ -478,6 +492,12 @@ function processGuess() {
             document.getElementById("game_message").innerHTML =
                 "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p>" +
                 "<p>Click <a href='javascript:screenshot();'>here</a> to copy the image.</p>";
+            
+            document.getElementById("submission_panel").innerHTML =
+                '<form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false;">' +
+                '<input id="input_box" type="text" name="input_box" disabled>' +
+                '<input id="submit_button" type="submit" value="Submit" name="submit" style="background-color:grey" disabled></form>';
+
         } else {
             if (numberOfAttempts == guessLimit) {
                 gameResult = "loss";
@@ -490,7 +510,12 @@ function processGuess() {
                 document.getElementById("game_message").innerHTML =
                     "<p></p><p>Sorry! You have run out of guesses...</p><p>The puzzle word was: " + puzzleWord + 
                     "</p><p>Click <a href='javascript:screenshot();'>here</a> to share your puzzle on social media.</p>";
-            } else {                                                                                            // new  else for screenshot
+                
+                document.getElementById("submission_panel").innerHTML =
+                    '<form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false;">' +
+                    '<input id="input_box" type="text" name="input_box" disabled>' +
+                    '<input id="submit_button" type="submit" value="Submit" name="submit" style="background-color:grey" disabled></form>';
+            } else {
                 if(userRole == "ADMIN" || userRole == "SUPER_ADMIN") {
                     document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
                         "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p>" +
@@ -560,6 +585,7 @@ function selectAnimal(language, id) {
 // the current day.  That is the reason of the if/else code in this function.
 function setCookie(cname, cvalue, expiration) {
     let expires = "expires=";
+    let path = "path=";
     if (cname != "tableData") {
         const d = new Date();
         d.setTime(d.getTime() + (expiration * 24 * 60 * 60 * 1000));
@@ -567,7 +593,13 @@ function setCookie(cname, cvalue, expiration) {
     } else {
         expires = expires + expiration.toUTCString();
     }
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    if (customWord) {
+        const urlParams = new URLSearchParams(location.search);
+        const valueIterator = urlParams.values();
+        let id = valueIterator.next().value;
+        cname = cname + id;
+    }
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";" + path + "/";
 }
 
 function getCookie(cname) {
@@ -702,23 +734,33 @@ function updateStats(gameMessage) {
 }
 
 function loadClue() {
-    let puzzleWordClue;
-    $.ajax({
-        async: false,
-        url: "lib/helper_functions.php",
-        type: "POST",
-        data: {method: "getClue"}
-    }).done(function(data) {
-        puzzleWordClue = data;
-    });
-
+    let clue;
     if(customWord) {
-        document.getElementById("clue_box").innerHTML = "<p></p><p>Sorry! Custom Words don't have clues!</p><p>You're on your own for this one!</p>"
+        const urlParams = new URLSearchParams(location.search);
+        const valueIterator = urlParams.values();
+        let id = valueIterator.next().value;
+        $.ajax({
+            async: false,
+            url: "lib/helper_functions.php",
+            type: "POST",
+            data: {method: "getCustomClue", arg: id}
+        }).done(function(data) {
+            clue = data;
+        });
     } else {
-        if(puzzleWordClue != "") {
-            document.getElementById("clue_box").innerHTML = "<p></p><p>Your clue is:</p><p>" + puzzleWordClue + "</p>";
-        } else {
-            document.getElementById("clue_box").innerHTML = "<p></p><p>Sorry! There is no clue for this word!</p><p>Please guess the word.</p>";
-        }
+        $.ajax({
+            async: false,
+            url: "lib/helper_functions.php",
+            type: "POST",
+            data: {method: "getPuzzleClue"}
+        }).done(function(data) {
+            clue = data;
+        });
+    }
+
+    if(clue != "") {
+        document.getElementById("clue_box").innerHTML = "<p></p><p>Your clue is:</p><p>" + clue + "</p>";
+    } else {
+        document.getElementById("clue_box").innerHTML = "<p></p><p>Sorry! There is no clue for this word!</p><p>Please guess the word.</p>";
     }
 }

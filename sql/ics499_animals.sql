@@ -32,19 +32,21 @@ CREATE TABLE `custom_words` (
   `word` varchar(20) NOT NULL,
   `Email` varchar(50) NOT NULL,
   `total_plays` int(10) NOT NULL,
-  `winning_plays` int(10) NOT NULL
+  `winning_plays` int(10) NOT NULL,
+  `clue` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `custom_words`
 --
 
-INSERT INTO `custom_words` (`Id`, `word`, `Email`, `total_plays`, `winning_plays`) VALUES
-(1, 'test', 'marc.wedo@gmail.com', 0, 0),
-(2, 'exam', 'john.doe@gmail.com', 0, 0),
-(3, 'final', 'marc.wedo@gmail.com', 1, 1),
-(4, 'hello', 'marc.wedo@gmail.com', 1, 1),
-(5, 'mule', 'marc.wedo@gmail.com', 0, 0);
+INSERT INTO `custom_words` (`Id`, `word`, `Email`, `total_plays`, `winning_plays`, `clue`) VALUES
+(1, 'test', 'marc.wedo@gmail.com', 0, 0, 'May induce stress in students'),
+(2, 'exam', 'john.doe@gmail.com', 0, 0, 'An event that may be proctored'),
+(3, 'final', 'marc.wedo@gmail.com', 1, 1, 'Could be a test or sporting event. Either way, there is a lot at stake.'),
+(4, 'hello', 'marc.wedo@gmail.com', 1, 1 'A common greeting'),
+(5, 'mule', 'marc.wedo@gmail.com', 0, 0, 'A beast of burden'),
+(6, 'మండోదరి', 'marc.wedo@gmail.com', 0, 0, 'ఓ పురాణ పాత్ర');
 
 -- --------------------------------------------------------
 
@@ -291,7 +293,7 @@ ALTER TABLE `puzzle_words`
 -- AUTO_INCREMENT for table `custom_words`
 --
 ALTER TABLE `custom_words`
-  MODIFY `Id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Id` int(50) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
