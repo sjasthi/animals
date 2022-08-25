@@ -31,31 +31,17 @@
         </div>
     </header>
 
-    <body style="background-color:#f2edf2">
-        <form action="insert_custom_word.php" method="POST">
-            <table style="color:black; margin-left:auto; margin-right: auto;">
-                <tr>
-                    <td>
-                        Enter Word:                     
-                    </td>
-                    <td>
-                        <input type="text" name="word" autocomplete="off" required>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Enter Email:                     
-                    </td>
-                    <td>
-                        <input type="text" name="email" required>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="Submit" value="Submit" name = "submit">
-                    </td>
-                </tr>
-            </table>
-        </form>
+    <body style="background-color:darkblue">
+        <div id="body_panel">
+            <div id="form_panel">
+                <form action="insert_custom_word.php" method="POST" autocomplete="off">
+                    <label class="input_label" for="word">Word:</label><br>
+                    <input class="input_text_field" type="text" name="word"><br>
+                    <label class="input_label" for="clue">Clue:</label><br>
+                    <textarea class="input_text_area" name="clue" maxlength="200"></textarea><br><br>
+                    <input class="form_panel_submit" type="submit" value="Submit" name="submit">
+                </form>
+            </div>
+        </div>
     </body>
 </html>

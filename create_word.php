@@ -31,39 +31,21 @@
         </div>
     </header>
 
-    <body style="background-color:#f2edf2">
-        <form action="insert.php" method="POST" autocomplete="off">
-            <table style="color:black; margin-left:auto; margin-right: auto;">
-                <tr>
-                    <td>
-                        Enter Word:                     
-                    </td>
-                    <td>
-                        <input type="text" name="word" required>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Enter Date to be played:                     
-                    </td>
-                    <td>
-                        <input type="date" name="date" required>
-                    </td>
-                </tr>
-                <tr>
-                <td>
-                        Enter time to be played:                     
-                    </td>
-                    <td>
-                        <input type="time" name="time" required>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="Submit" value="Submit" name = "submit">
-                    </td>
-                </tr>
-            </table>
-        </form>
+    <body style="background-color:darkblue">
+        <div id="body_panel">
+            <div id="form_panel">
+                <form action="insert.php" method="POST" autocomplete="off">
+                    <input type="radio" id="english" name="language_choice" value="English">
+                    <label class="input_label" for="english">English</label><br>
+                    <input type="radio" id="telugu" name="language_choice" value="Telugu" style="margin-left:-10px">
+                    <label class="input_label" for="telugu">Telugu</label><br><br>
+                    <label class="input_label" for="word">Word:</label><br>
+                    <input class="input_text_field" type="text" name="word"><br>
+                    <label class="input_label" for="clue">Clue:</label><br>
+                    <textarea class="input_text_area" name="clue" maxlength="200"></textarea><br><br>
+                    <input class="form_panel_submit" type="submit" value="Submit" name="submit">
+                </form>
+            </div>
+        </div>
     </body>
 </html>

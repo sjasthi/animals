@@ -23,8 +23,8 @@
                     <a id="toggle" class="toggle-vis" data-column="3">Winning Plays</a> - 
                     <a id="toggle" class="toggle-vis" data-column="4">Total Plays</a> - 
                     <a id="toggle" class="toggle-vis" data-column="5">Clue</a> - 
-                    <a id="toggle" class="toggle-vis" data-column="5">Modify</a> - 
-                    <a id="toggle" class="toggle-vis" data-column="6">Delete</a> -
+                    <a id="toggle" class="toggle-vis" data-column="6">Modify</a> - 
+                    <a id="toggle" class="toggle-vis" data-column="7">Delete</a> -
                 </div> <br>
                 
                 <?php

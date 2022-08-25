@@ -25,7 +25,7 @@
 
     <body style="background-color:darkblue">
         <div id="body_panel">
-            <div id="login_panel">
+            <div id="form_panel">
                 <form action="index.php" method="post" onsubmit="processLogin();return false;">
                     <label for="email" style="font-weight:bold">Email Address:</label><br>
                     <input id="email_field" type="email" name="email"><br>

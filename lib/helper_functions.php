@@ -131,7 +131,7 @@
         return $row["word"];
     }
 
-    function getClue() {
+    function getPuzzleClue() {
         date_default_timezone_set('America/Chicago');
         $date = date("Y-m-d");
         $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
@@ -140,6 +140,15 @@
         } else {
             $sql = "SELECT clue FROM puzzle_words WHERE date = '$date' AND time = '20:00:00'";
         }
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        $conn->close();
+        return $row["clue"];
+    }
+
+    function getCustomClue($id) {
+        $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
+        $sql = "SELECT clue FROM custom_words WHERE id = '$id'";
         $result = $conn->query($sql);
         $row = $result->fetch_assoc();
         $conn->close();

@@ -214,35 +214,36 @@ Jace Huddock    jmhuddock09@gmail.com
                     $result = $conn->query($sql);
                 
                     if ($result -> num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                        $customWord=$row["word"];
-                    }//end if
-
+                        while ($row = $result->fetch_assoc()) {
+                            $customWord=$row["word"];
+                        }
                     $conn -> close(); 
-                }//end if
+                    }
             ?>
                 var word = "<?php echo $customWord; ?>";
                 fillCustomWord(word);
-            <?php } else {
-                date_default_timezone_set('America/Chicago');
-                $date = date("Y-m-d");
-                
-                $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
-                if(date("H") >= 8 && date("H") < 20) {
-                    $sql = "SELECT word FROM puzzle_words WHERE date = '$date' AND time = '08:00:00'";
+            <?php 
                 } else {
-                    $sql = "SELECT word FROM puzzle_words WHERE date = '$date' AND time = '20:00:00'";
-                }
-                $result = $conn->query($sql);
-                $row = $result->fetch_assoc();
-                $puzzleWord = $row["word"];
+                    date_default_timezone_set('America/Chicago');
+                    $date = date("Y-m-d");
+                
+                    $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
+                    if(date("H") >= 8 && date("H") < 20) {
+                        $sql = "SELECT word FROM puzzle_words WHERE date = '$date' AND time = '08:00:00'";
+                    } else {
+                        $sql = "SELECT word FROM puzzle_words WHERE date = '$date' AND time = '20:00:00'";
+                    }
+                    $result = $conn->query($sql);
+                    $row = $result->fetch_assoc();
+                    $puzzleWord = $row["word"];
 
-                $conn->close();
+                    $conn->close();
 
-                $puzzleWord = $row["word"]; ?>
+                    $puzzleWord = $row["word"]; ?>
                     var word = "<?php echo $puzzleWord; ?>";
                     fillPuzzleWord(word);
-            <?php } ?>
+            <?php 
+                } ?>
 
             loadGame();
 

@@ -180,7 +180,7 @@ if (isset($_GET['id'])){
 <br><br>
    
     <h2 id="title">Word List</h2><br>
-    <h3 id="title">Unable to update. Time has passed</h3>
+    <h3 id="title">Unable to update words that have dates/times in the past.</h3>
 
     <?php
         include('table_puzzle_words.php');

@@ -9,6 +9,7 @@
                     <th>Email</th>
                     <th>Winning Plays</th>
                     <th>Total Plays</th>
+                    <th>Clue</th>
                     <th>Modify</th>
                     <th>Delete</th>
                 </tr>
@@ -21,8 +22,9 @@
                     <a id="toggle" class="toggle-vis" data-column="2">Email</a> - 
                     <a id="toggle" class="toggle-vis" data-column="3">Winning Plays</a> - 
                     <a id="toggle" class="toggle-vis" data-column="4">Total Plays</a> - 
-                    <a id="toggle" class="toggle-vis" data-column="5">Modify</a> - 
-                    <a id="toggle" class="toggle-vis" data-column="6">Delete</a> -
+                    <a id="toggle" class="toggle-vis" data-column="5">Clue</a> - 
+                    <a id="toggle" class="toggle-vis" data-column="6">Modify</a> - 
+                    <a id="toggle" class="toggle-vis" data-column="7">Delete</a> -
                 </div> <br>
                 
                 <?php
@@ -39,6 +41,7 @@
                     $email = $row["Email"];
                     $winning_plays = $row["winning_plays"];
                     $total_plays = $row["total_plays"];
+                    $clue = $row["clue"];
 
                 ?>
                 <tr>
@@ -47,6 +50,7 @@
                     <td><div contenteditable="true" onBlur="updateValue(this,'Email','<?php echo $id; ?>')"><?php echo $email; ?></div></span> </td>
                     <td><div contenteditable="true" onBlur="updateValue(this,'winning_plays','<?php echo $id; ?>')"><?php echo $winning_plays ?></div></span> </td>
                     <td><div contenteditable="true" onBlur="updateValue(this,'total_plays','<?php echo $id; ?>')"><?php echo $total_plays; ?></div></span> </td>
+                    <td><div contenteditable="true" onBlur="updateValue(this,'clue','<?php echo $id; ?>')"><?php echo $clue; ?></div></span> </td>
                     <?php echo '<td><a class="btn btn-warning btn-sm" href="update_custom_word.php?id='.$row["Id"].'">Modify</a></td>' ?>
                     <?php echo '<td><a class="btn btn-danger btn-sm" href="delete_custom_word.php?rn='.$row["Id"].'">Delete</a></td>' ?>
                 </tr>
