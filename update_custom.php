@@ -1,33 +1,21 @@
 <?php
-                    require 'db_configuration.php';
-                    $id=$_GET['rn'];
-        
-                    $new_word = $_POST['word'];
-                    $new_email = $_POST['email'];
+    require 'db_configuration.php';
+    $id = $_GET['rn'];
 
-                    $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
+    $clue = $_POST['clue'];
 
-                    if ($new_word != "") {
-                        $UPDATE = "UPDATE custom_words SET word=? WHERE id=?";            
-                        $stmt = $conn->prepare($UPDATE);
-                        $stmt->bind_param("ss", $new_word, $id);
-                        if (! $stmt->execute()) {
-                            echo $stmt->error;
-                        }
-                        $stmt->close();
-                    } 
-                    if ($new_email != "") {
-                        $UPDATE = "UPDATE custom_words SET Email=? WHERE id=?";            
-                        $stmt = $conn->prepare($UPDATE);
-                        $stmt->bind_param("ss", $new_email, $id);
-                        if (! $stmt->execute()) {
-                            echo $stmt->error;
-                        }
-                        $stmt->close();
-                    } 
+    $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
 
-                    $conn->close();
-
+    if ($clue != "") {
+        $UPDATE = "UPDATE custom_words SET clue=? WHERE id=?";            
+        $stmt = $conn->prepare($UPDATE);
+        $stmt->bind_param("ss", $clue, $id);
+        if (! $stmt->execute()) {
+            echo $stmt->error;
+        }
+        $stmt->close();
+    }
+    $conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -74,33 +62,31 @@
 
     <header style="background-color:white">
         <div id="secondary_screen_buttons">
-            <div id="back_button">
-                <a href="index.php"><img src="images/back_icon.png" alt="Back Icon" style="Display:Block;width:70px;height:70px;"></a>
+            <div id="back_button" class="header_button">
+                <a href="index.php"><img class="menu_button_image" src="images/back_icon.png" alt="Back Icon"></a>
             </div>
-            <div id="add_button">
-                <a href="create_custom_word.php"><img src="images/add_icon.png" alt="Add Icon" style="Display:Block;width:70px;height:70px;"></a>
+            <div id="add_button" class="header_button">
+                <a href="create_custom_word.php"><img class="menu_button_image" src="images/add_icon.png" alt="Add Icon"></a>
             </div>
         </div>
-        <div id="game_title">
+        <div id="secondary_screen_title">
             <p>Puzzle Word List</p>
         </div>
         <div id="secondary_screen_logo">
-            <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
+            <a href="https://telugupuzzles.com"><img class="logo_image" src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
         </div>
     </header>
     <body style="background-color:#f2edf2">
 
-<?php $page_title = 'Animals > puzzle word list';
-?>
+        <?php $page_title = 'Animals > puzzle word list'; ?>
 
-<!-- Page Content -->
-<br><br>
+        <!-- Page Content -->
+        <br>
+        <br>
    
-    <h2 id="title">Custom Word List</h2><br>
+        <h2 id="title">Custom Word List</h2><br>
     
-    <?php
-        include('table_custom_words.php');
-    ?>
+        <?php include('table_custom_words.php'); ?>
 
-</body>
+    </body>
 </html>

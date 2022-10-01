@@ -84,19 +84,19 @@ function buildTables() {
 
     if(puzzleWordLanguage == "English") {
         if(guessLimit == 8) {
-            tdTag = "<td style='width:100px;height:70px;font-size:48px'></td>"
+            tdTag = "<td class='td_english_eight'></td>"
         } else if (guessLimit == 10) {
-            tdTag = "<td style='width:90px;height:60px;font-size:42px'></td>"
+            tdTag = "<td class='td_english_ten'></td>"
         } else {
-            tdTag = "<td style='width:80px;height:50px;font-size:36px'></td>"
+            tdTag = "<td class='td_english_twelve'></td>"
         }
     } else {
         if(guessLimit == 8) {
-            tdTag = "<td style='width:100px;height:70px;font-size:36px'></td>"
+            tdTag = "<td class='td_telugu_eight'></td>"
         } else if (guessLimit == 10) {
-            tdTag = "<td style='width:90px;height:60px;font-size:30px'></td>"
+            tdTag = "<td class='td_telugu_ten'></td>"
         } else {
-            tdTag = "<td style='width:80px;height:50px;font-size:24px'></td>"
+            tdTag = "<td class='td_telugu_twelve'></td>"
         }
     }
 
@@ -107,11 +107,11 @@ function buildTables() {
         tableRows = tableRows + "<tr>" + cells + "</tr>";
     }
 
-    document.getElementById("clue_box").innerHTML = "<p></p><p>Click <a href='#' onclick='loadClue()'>here</a> to see a clue!</p>";
+    document.getElementById("clue_box").innerHTML = "<p>Click <a href='#' onclick='loadClue()'>here</a> to see a clue!</p>";
     document.getElementById("character_table").innerHTML = tableRows;
     document.getElementById("animal_table").innerHTML = tableRows;
-    document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
-        "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p><p>Good luck!</p>"
+    document.getElementById("game_message").innerHTML = "<p>Puzzle Word Language: " + puzzleWordLanguage +
+        "<br>You have " + guessLimit + " guesses to solve the puzzle!<br>Good luck!</p>";
 }
 
 // Restores table data and vital game variables from cookie data when a cookie exists. If the game was unfinished when
@@ -151,7 +151,7 @@ function loadSaveData(saveData) {
                 selectAnimal(wordLanguage, savedTableData[animalIndex][c]);
                 pictureFile = "images/" + animal + ".png";
                 document.getElementById("animal_table").rows[r].cells[c].innerHTML =
-                    "<img src=" + pictureFile + " alt=" + animal + ' style="width:40px;height:auto;">';
+                    "<img class='animal_image' src=" + pictureFile + " alt=" + animal + ">";
             }
         } else {
             for(var c = 0; c < wordLength; c++) {
@@ -160,7 +160,7 @@ function loadSaveData(saveData) {
                     selectAnimal(wordLanguage, savedTableData[animalIndex][c]);
                     pictureFile = "images/" + animal + ".png";
                     document.getElementById("animal_table").rows[r].cells[c].innerHTML =
-                        "<img src=" + pictureFile + " alt=" + animal + ' style="width:40px;height:auto;">';
+                        "<img class='animal_image' src=" + pictureFile + " alt=" + animal + ">";
                 }
             }
         }
@@ -180,8 +180,8 @@ function loadSaveData(saveData) {
     if(latestResultString == "11111" || latestResultString == "1111" || latestResultString == "111") {
         gameResult = "win";
         document.getElementById("game_message").innerHTML =
-            "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p>" +
-            "<p>Click <a href='javascript:screenshot();'>here</a> to copy the image.</p>";
+            "<p>Congratulations!<br>Share your complete puzzle on social media.<br>" +
+            "Click <a href='javascript:screenshot();'>here</a> to copy the image.</p>";
         document.getElementById("submission_panel").innerHTML =
             '<form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false;">' +
             '<input id="input_box" type="text" name="input_box" disabled>' +
@@ -190,8 +190,8 @@ function loadSaveData(saveData) {
         if(numberOfWords == guessLimit) {
             gameResult = "loss";
             document.getElementById("game_message").innerHTML =
-                "<p></p><p>Sorry! You have run out of guesses...</p><p>The puzzle word was: " + puzzleWord +
-                "</p><p>Click <a href='javascript:screenshot();'>here</a> to share your puzzle on social media.</p>";
+                "<p>Sorry! You have run out of guesses...<br>" +
+                "Click <a href='javascript:screenshot();'>here</a> to share your puzzle on social media.</p>";
             document.getElementById("submission_panel").innerHTML =
                 '<form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false;">' +
                 '<input id="input_box" type="text" name="input_box" disabled>' +
@@ -208,12 +208,12 @@ function loadSaveData(saveData) {
             }
 
             if(userRole == "ADMIN" || userRole == "SUPER_ADMIN") {
-                document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
-                    "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p>" +
-                    "<p>Click <a href='javascript:screenshot();'>here</a> to share the puzzle in progress!</p>";
+                document.getElementById("game_message").innerHTML = "<p>Puzzle Word Language: " + puzzleWordLanguage + 
+                    "<br>You have " + guessLimit + " guesses to solve the puzzle!<br>" +
+                    "Click <a href='javascript:screenshot();'>here</a> to share the puzzle in progress!</p>";
             } else {
-                document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
-                    "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p><p>Good luck!</p>";
+                document.getElementById("game_message").innerHTML = "<p>Puzzle Word Language: " + puzzleWordLanguage +
+                    "<br>You have " + guessLimit + " guesses to solve the puzzle!<br>Good luck!</p>";
             }
         }
     }
@@ -465,7 +465,7 @@ function processGuess() {
                 selectAnimal(guessWordLanguage, matchString.charAt(c));
                 pictureFile = "images/" + animal + ".png";
                 document.getElementById("animal_table").rows[numberOfAttempts - 1].cells[c].innerHTML =
-                    "<img src=" + pictureFile + " alt=" + animal + ' style="width:40px;height:auto;">';
+                    "<img class='animal_image' src=" + pictureFile + " alt=" + animal + ">";
             }
         } else {
             for(var c = 0; c < puzzleWordLength; c += 1) {
@@ -474,7 +474,7 @@ function processGuess() {
                     selectAnimal(guessWordLanguage, matchString.charAt(c));
                     pictureFile = "images/" + animal + ".png";
                     document.getElementById("animal_table").rows[numberOfAttempts - 1].cells[c].innerHTML =
-                        "<img src=" + pictureFile + " alt=" + animal + ' style="width:40px;height:auto;">';
+                        "<img class='animal_image' src=" + pictureFile + " alt=" + animal + ">";
                 }
             }
         }
@@ -490,8 +490,8 @@ function processGuess() {
                 updateStats(gameResult);
             }
             document.getElementById("game_message").innerHTML =
-                "<p></p><p>Congratulations!</p><p>You can now share your complete puzzle on social media.</p>" +
-                "<p>Click <a href='javascript:screenshot();'>here</a> to copy the image.</p>";
+                "<p>Congratulations!<br>Share your complete puzzle on social media.<br>" +
+                "Click <a href='javascript:screenshot();'>here</a> to copy the image.</p>";
             
             document.getElementById("submission_panel").innerHTML =
                 '<form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false;">' +
@@ -508,8 +508,8 @@ function processGuess() {
                     updateStats(gameResult);
                 }
                 document.getElementById("game_message").innerHTML =
-                    "<p></p><p>Sorry! You have run out of guesses...</p><p>The puzzle word was: " + puzzleWord + 
-                    "</p><p>Click <a href='javascript:screenshot();'>here</a> to share your puzzle on social media.</p>";
+                    "<p>Sorry! You have run out of guesses...<br>" +
+                    "Click <a href='javascript:screenshot();'>here</a> to share your puzzle on social media.</p>";
                 
                 document.getElementById("submission_panel").innerHTML =
                     '<form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false;">' +
@@ -517,12 +517,12 @@ function processGuess() {
                     '<input id="submit_button" type="submit" value="Submit" name="submit" style="background-color:grey" disabled></form>';
             } else {
                 if(userRole == "ADMIN" || userRole == "SUPER_ADMIN") {
-                    document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
-                        "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p>" +
-                        "<p>Click <a href='javascript:screenshot();'>here</a> to share the puzzle in progress!</p>";
+                    document.getElementById("game_message").innerHTML = "<p>Puzzle Word Language: " + puzzleWordLanguage + 
+                        "<br>You have " + guessLimit + " guesses to solve the puzzle!<br>" +
+                        "Click <a href='javascript:screenshot();'>here</a> to share the puzzle in progress!</p>";
                 } else {
-                    document.getElementById("game_message").innerHTML = "<p></p><p>Puzzle Word Language: " + puzzleWordLanguage + 
-                        "</p><p>You have " + guessLimit + " guesses to solve the puzzle!</p><p>Good luck!</p>";
+                    document.getElementById("game_message").innerHTML = "<p>Puzzle Word Language: " + puzzleWordLanguage + 
+                        "<br>You have " + guessLimit + " guesses to solve the puzzle!<br>Good luck!</p>";
                 }
             }
         }
@@ -759,8 +759,8 @@ function loadClue() {
     }
 
     if(clue != "") {
-        document.getElementById("clue_box").innerHTML = "<p></p><p>Your clue is:</p><p>" + clue + "</p>";
+        document.getElementById("clue_box").innerHTML = "<p>Your clue is:<br>'" + clue + "'</p>";
     } else {
-        document.getElementById("clue_box").innerHTML = "<p></p><p>Sorry! There is no clue for this word!</p><p>Please guess the word.</p>";
+        document.getElementById("clue_box").innerHTML = "<p>Sorry! There is no clue for this word!<br>Please guess the word.</p>";
     }
 }

@@ -9,12 +9,13 @@ if (isset($_GET['id'])){
     $result = $conn->query($sql);
 
     if ($result -> num_rows > 0) {
-      while ($row = $result->fetch_assoc()) {
-        $word=$row["word"];
-        $email = $row["Email"];
-    }//end if
+        while ($row = $result->fetch_assoc()) {
+            $word = $row["word"];
+            $email = $row["Email"];
+            $clue = $row["clue"];
+        }
     $conn -> close(); 
-}//end if
+    }
 }
 
 ?>
@@ -40,43 +41,29 @@ if (isset($_GET['id'])){
 
     <header style="background-color:white">
         <div id="secondary_screen_buttons">
-            <div id="back_button">
-                <a href="list_custom_words.php"><img src="images/back_icon.png" alt="Back Icon" style="Display:Block;width:70px;height:70px;"></a>
+            <div id="back_button" class="header_button">
+                <a href="list_custom_words.php"><img class="menu_button_image" src="images/back_icon.png" alt="Back Icon"></a>
             </div>
         </div>
-        <div id="game_title">
+        <div id="secondary_screen_title">
             <p>Update Custom Word</p>
         </div>
         <div id="secondary_screen_logo">
-            <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
+            <a href="https://telugupuzzles.com"><img class="logo_image" src="images/logo.png" alt="10000 Icon"></a>
         </div>
     </header>
 
-    <body style="background-color: #f2edf2">
-        <form action="update_custom.php?rn=<?php echo $_GET['id'] ?>" method="POST">
-            <table style="color:black; margin-left:auto; margin-right: auto;">
-                <tr>
-                    <td>
-                        New Word:                     
-                    </td>
-                    <td>
-                        <input placeholder="<?php echo $word ?>" type="text" name="word">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        New Email:                     
-                    </td>
-                    <td>
-                        <input placeholder="<?php echo $email ?>"type="text" name="email">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="Submit" value="Submit" name = "submit">
-                    </td>
-                </tr>
-            </table>
-        </form>
+    <body style="background-color: darkblue">
+        <div id="body_panel">
+            <div id="form_panel">
+                <form id="update_word_form" action="update_custom.php?rn=<?php echo $_GET['id'] ?>" method="POST" autocomplete="off">
+                    <label class="input_label" for="word">Word:</label><br>
+                    <input class="input_text_field" type="text" placeholder=<?php echo $word ?> name="word" disabled><br>
+                    <label class="input_label" for="clue">Clue:</label><br>
+                    <textarea class="input_text_area" placeholder=<?php echo "'$clue'" ?> name="clue" maxlength="200"></textarea><br>
+                    <input class="form_panel_submit" type="submit" value="Submit" name="submit">
+                </form>
+            </div>
+        </div>
     </body>
 </html>

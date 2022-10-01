@@ -3,50 +3,51 @@
     padding: 0;
 }
 
-p, div, pre {
+p, div, pre, textarea {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+pre {
+    white-space: pre-wrap;
+}
+
 header {
-    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     height: 120px;
 }
 
 #main_screen_logo {
-    position: absolute;
-    margin: 20px;
-    width: 320px;
+    margin-left: 20px;
+    text-align: center;
+    width: 270px;
     height: 80px;
 }
 
+.logo_image {
+    height: 80px;
+    width: auto;
+}
+
 #game_title {
-    position: absolute;
-    margin: 20px 20px 20px 380px;
-    width: 1150px;
+    width: 300px;
     height: 80px;
     text-align: center;
-    font-size: 64px;
+    font-size: 56px;
     font-weight: bold;
 }
 
 #menu_buttons {
-    position: absolute;
-    margin: 20px 20px 20px 1550px;
-    width: 300px;
+    display: flex;
+    margin-right: 20px;
+    width: 270px;
     height: 80px;
-    white-space: nowrap;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
-#help_button {
-    display:inline-block;
-    margin: 5px 5px 5px 0px;
-    width: 70px;
-    height: 70px;
-    border: 2px solid lightgrey;
-    border-radius: 5px;
-}
-
-#stat_button {
+.header_button {
     display:inline-block;
     margin: 5px 5px 5px 0px;
     width: 70px;
@@ -65,45 +66,47 @@ header {
 }
 
 #secondary_screen_buttons {
-    position: absolute;
-    margin: 20px 20px 20px 20px;
-    width: 400px;
+    display: flex;
+    margin-left: 20px;
+    width: 270px;
     height: 80px;
-    white-space: nowrap;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
-#back_button {
-    display: inline-block;
-    margin: 5px 5px 5px 0px;
-    width: 70px;
-    height: 70px;
-    border: 2px solid lightgrey;
-    border-radius: 5px;
-}
-
-#add_button {
-    display: inline-block;
-    margin: 5px 5px 5px 0px;
-    width: 70px;
-    height: 70px;
-    border: 2px solid lightgrey;
-    border-radius: 5px;
+#secondary_screen_title {
+    width: 700px;
+    height: 80px;
+    text-align: center;
+    font-size: 56px;
+    font-weight: bold;
 }
 
 #secondary_screen_logo {
-    position: absolute;
-    margin: 20px 20px 20px 1650px;
-    width: 320px;
+    margin-right: 20px;
+    text-align: center;
+    width: 270px;
     height: 80px;
 }
 
-#clue_box {
+.menu_button_image {
+    display: block;
+    width: 70px;
+    height: auto;
+}
+
+#main_panel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#game_message {
     background-color: white;
-    position: absolute;
-    margin-left: 100px;
-    margin-top: 250px;
     padding: 20px;
-    width: 350px;
+    min-width: 350px;
+    width: 20%;
     height: 200px;
     font-weight: bold;
     border-style: double;
@@ -113,34 +116,107 @@ header {
 
 #game_panel {
     background-color: darkblue;
-    position: absolute;
-    margin-left: 540px;
-    width: 825px;
-    height: 660px;
-    white-space: nowrap;
+    display: flex;
+    width: 45%;
+    height: 785px;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-#character_tile_panel {
-    display: inline-block;
-    margin: 20px;
-    width: 380px;
-    height: 625px;
+#table_panel {
+    display: flex;
+    margin-top: 10px;
+    width: 85%;
+    height: 675px;
+    justify-content: space-around;
+    align-items: center;
 }
 
-#animal_tile_panel {
-    display: inline-block;
-    margin: 20px 20px 20px 0px;
-    width: 380px;
-    height: 625px;
-}
-
-#game_message {
+#character_table {
     background-color: white;
-    position: absolute;
-    margin-left: 1400px;
-    margin-top: 250px;
+    margin: 10px;
+    border: 5px solid;
+    border-collapse: collapse;
+}
+
+#animal_table {
+    background-color: white;
+    margin: 10px;
+    border: 5px solid;
+    border-collapse: collapse;
+}
+
+.td_english_eight {
+    width: 100px;
+    height: 70px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 5px solid;
+    text-align: center;
+    font-weight: bold;
+    font-size: 48px;
+}
+
+.td_english_ten {
+    width: 90px;
+    height: 60px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 5px solid;
+    text-align: center;
+    font-weight: bold;
+    font-size: 42px;
+}
+
+.td_english_twelve {
+    width: 80px;
+    height: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 5px solid;
+    text-align: center;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+.td_telugu_eight {
+    width: 100px;
+    height: 70px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 5px solid;
+    text-align: center;
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.td_telugu_ten {
+    width: 90px;
+    height: 60px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 5px solid;
+    text-align: center;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+.td_telugu_twelve {
+    width: 80px;
+    height: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 5px solid;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.animal_image {
+    width: 38px;
+    height: auto;
+}
+
+#clue_box {
+    background-color: white;
     padding: 20px;
-    width: 350px;
+    min-width: 350px;
+    width: 20%;
     height: 200px;
     font-weight: bold;
     border-style: double;
@@ -148,53 +224,32 @@ header {
     border-color: goldenrod;
 }
 
-#character_table {
-    background-color:white;
-    margin-left: auto;
-    margin-right: 0px;
-    width: 360px;
-    height: 360px;
-    border: 5px solid;
-    border-collapse: collapse;
-}
-
-#animal_table {
-    background-color:white;
-    margin-left: 0px;
-    margin-right: auto;;
-    width: 360px;
-    height: 360px;
-    border: 5px solid;
-    border-collapse: collapse;
-}
-
 #submission_panel {
-    position: absolute;
-    margin-top: 680px;
-    margin-left: 540px;
-    width: 825px;
+    display: flex;
+    width: 80%;
     height: 120px;
-    white-space: nowrap;
+    justify-content: center;
+    align-items: center;
 }
 
 form {
-    margin: 20px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #input_box {
-    position: absolute;
-    padding-left: 20px;
-    width: 585px;
-    height: 70px;
+    padding: 5px 20px 5px 20px;
+    width: 80%;
     font-size: 48px;
 }
 
 #submit_button {
-    position: absolute;
-    margin-left: 615px;
-    width: 175px;
-    height: 70px;
-    font-size: 24px;
+    margin-left: 20px;
+    width: 20%;
+    height: 55px;
+    font-size: 20px;
     color:white;
     background-color:royalblue;
 }
@@ -257,6 +312,12 @@ form {
     border: 1px solid #888;
     width: 40%;
 }
+
+.help_image {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+}
   
 .close {
     color: #aaaaaa;
@@ -314,46 +375,57 @@ form {
 }
 
 #body_panel {
-    width: 100%;
-    height: 550px;
-    text-align: center;
-    font-size: 24px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 #form_panel {
     background-color: white;
-    position: absolute;
-    padding-top: 40px;
+    display: flex;
     margin-top: 40px;
-    margin-left: 700px;
-    width: 500px;
-    height: 500px;
-    text-align: center;
+    width: 40%;
+    height: 550px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     font-size: 24px;
     border-style: double;
     border-width: 10px;
     border-color: goldenrod;
 }
 
+#login_form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_label {
+    font-weight: bold;
+    font-size: 24px;
+}
+
 #email_field {
-    margin: 20px;
+    margin: 30px;
     padding-left: 10px;
     height: 50px;
-    width: 400px;
+    width: 80%;
     font-size: 24px;
 }
 
 #password_field {
-    margin: 20px;
+    margin: 30px;
     padding-left: 10px;
     height: 50px;
-    width: 400px;
+    width: 80%;
     font-size: 24px;
 }
 
 #login_submit_button {
-    margin-top: 20px;
-    width: 100px;
+    margin: 20px;
+    width: 20%;
     height: 50px;
     font-size: 24px;
     color:white;
@@ -361,44 +433,448 @@ form {
 }
 
 #login_message {
-    margin-top: 20px;
-    margin-left: 45px;
+    margin: 20px;
     padding-top: 20px;
     text-align:center;
     font-size: 24px;
     height: 100px;
-    width: 400px;
+    width: 80%;
     color:red;
 }
 
+#add_word_form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#update_word_form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#revise_word_form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
 .input_label {
-    margin: 10px;
     font-weight: bold;
     font-size: 24px;
 }
 
+#input_radio_buttons {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px;
+    width: 100%;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+}
+
+#radio_options {
+    width: 20%;
+}
+
+.input_radio {
+    width: 40px;
+}
+
 .input_text_field {
-    margin: 10px;
+    margin: 20px;
     padding-left: 10px;
-    width: 400px;
+    width: 90%;
     height: 50px;
     font-size: 24px;
 }
 
 .input_text_area {
-    margin: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin: 20px;
+    padding: 10px;
     font-size: 24px;
-    width: 400px;
+    width: 90%;
     height: 100px;
     resize: none;
 }
 
 .form_panel_submit {
-    width: 100px;
+    margin: 20px;
+    width: 20%;
     height: 50px;
     font-size: 24px;
     color:white;
     background-color:royalblue;
 }
+
+@media only screen and (max-width: 1250px) {
+    header {
+        height: 90px;
+    }
+    
+    #game_message {
+        margin-top: 20px;
+        width: 65%;
+        height: 75px;
+        border-width: 5px;
+    }
+
+    #game_panel {
+        width: 100%;
+    }
+
+    #clue_box {
+        margin-top: 20px;
+        width: 65%;
+        height: 50px;
+        border-width: 5px;
+    }
+
+    .modal-content {
+        width: 70%;
+    }
+  }
+
+  @media only screen and (max-width: 912px) {
+    .logo_image {
+        margin-top: 10px;
+        height: 60px;
+        width: auto;
+    }
+
+    #game_title {
+        padding-top: 10px;
+        font-size: 40px;
+    }
+
+    .header_button {
+        width: 50px;
+        height: 50px;
+    }
+
+    #profile_button {
+        width: 50px;
+        height: 50px;
+    }
+
+    .menu_button_image {
+        width: 50px;
+        height: auto;
+    }
+
+    #secondary_screen_title {
+        padding-top: 20px;
+        font-size: 40px;
+    }
+
+    #form_panel {
+        width: 60%;
+    }
+
+    #radio_options {
+        width: 35%;
+    }
+  }
+
+  @media only screen and (max-width: 414px) {
+    header {
+        height: 50px;
+    }
+
+    #main_screen_logo {
+        margin-left: 5px;
+        width: 120px;
+        height: 40px;
+    }
+
+    .logo_image {
+        margin-top: 5px;
+        height: 30px;
+        width: auto;
+    }
+
+    #game_title {
+        margin-bottom: 10px;
+        width: 120px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    #menu_buttons {
+        margin-right: 5px;
+        width: 120px;
+        height: 40px;
+    }
+
+    #secondary_screen_buttons {
+        margin-left: 5px;
+        width: 85px;
+        height: 40px;
+    }
+
+    #secondary_screen_title {
+        padding-top: 10px;
+        width: 170px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    #secondary_screen_logo {
+        margin-right: 5px;
+        width: 85px;
+        height: 40px;
+        text-align: right;
+    }
+
+    .header_button {
+        width: 30px;
+        height: 30px;
+    }
+
+    #profile_button {
+        width: 30px;
+        height: 30px;
+    }
+
+    .menu_button_image {
+        width: 30px;
+        height: auto;
+    }
+
+    #game_message {
+        margin-top: 10px;
+        padding: 10px;
+        width: 85%;
+        min-width: 250px;
+        height: 60px;
+        font-size: 12px;
+        border-width: 3px;
+    }
+
+    #game_panel {
+        width: 100%;
+        height: 470px;
+    }
+
+    #clue_box {
+        margin-top: 5px;
+        padding: 10px;
+        width: 85%;
+        min-width: 250px;
+        height: 50px;
+        font-size: 12px;
+        border-width: 3px;
+    }
+
+    #table_panel {
+        height: 400px;
+    }
+
+    #character_table {
+        margin: 5px;
+        border: 2px solid;
+    }
+    
+    #animal_table {
+        margin: 5px;
+        border: 2px solid;
+    }
+
+    .td_english_eight {
+        width: 45px;
+        min-width: 30px;
+        height: 35px;
+        min-height: 20px;
+        border: 2px solid;
+        font-size: 18px;
+    }
+    
+    .td_english_ten {
+        width: 45px;
+        min-width: 30px;
+        height: 35px;
+        min-height: 20px;
+        border: 2px solid;
+        font-size: 18px;
+    }
+    
+    .td_english_twelve {
+        width: 45px;
+        min-width: 30px;
+        height: 30px;
+        min-height: 20px;
+        border: 2px solid;
+        font-size: 18px;
+    }
+    
+    .td_telugu_eight {
+        width: 45px;
+        min-width: 30px;
+        height: 35px;
+        min-height: 20px;
+        border: 2px solid;
+        font-size: 16px;
+    }
+    
+    .td_telugu_ten {
+        width: 45px;
+        min-width: 30px;
+        height: 35px;
+        min-height: 20px;
+        border: 2px solid;
+        font-size: 16px;
+    }
+    
+    .td_telugu_twelve {
+        width: 45px;
+        min-width: 30px;
+        height: 30px;
+        min-height: 20px;
+        border: 2px solid;
+        font-size: 16px;
+    }
+
+    .animal_image {
+        width: 22px;
+        height: auto;
+    }
+
+    #submission_panel {
+        width: 90%;
+        height: 60px;
+    }
+    
+    #input_box {
+        padding: 10px;
+        font-size: 18px;
+    }
+    
+    #submit_button {
+        margin-left: 10px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .modal-content {
+        padding: 10px;
+        width: 90%;
+        font-size: 10px;
+    }
+
+    .help_image {
+        width: 22px;
+        height: auto;
+    }
+
+    #stat_modal_title {
+        padding-top: 10px;
+        font-size: 18px;
+    }
+
+    #stat_values, #stat_labels {
+        height: 50px;
+    }
+
+    .stat_value {
+        width: 55px;
+        height: 25px;
+        padding-top: 20px;
+        font-size: 16px;
+    }
+
+    .stat_label {
+        display: inline-block;
+        width: 55px;
+        height: 40px;
+        vertical-align: top;
+        text-align: center;
+        font-size: 12px;
+    }
+
+    #form_panel {
+        margin-top: 100px;
+        width: 80%;
+        height: 300px;
+        font-size: 14px;
+        border-width: 5px;
+    }
+    
+    .login_label {
+        font-size: 14px;
+    }
+    
+    #email_field {
+        margin: 10px;
+        padding-left: 10px;
+        height: 25px;
+        width: 80%;
+        font-size: 14px;
+    }
+    
+    #password_field {
+        margin: 10px;
+        padding-left: 10px;
+        height: 25px;
+        width: 80%;
+        font-size: 14px;
+    }
+    
+    #login_submit_button {
+        margin-top: 10px;
+        height: 40px;
+        font-size: 14px;
+    }
+    
+    #login_message {
+        margin: 10px;
+        padding-top: 10px;
+        text-align:center;
+        font-size: 14px;
+        height: 50px;
+        width: 80%;
+    }
+
+    .input_label {
+        font-size: 14px;
+    }
+    
+    #input_radio_buttons {
+        margin: 10px;
+        height: 40px;
+    }
+    
+    #radio_options {
+        width: 80%;
+    }
+    
+    .input_radio {
+        width: 30px;
+    }
+    
+    .input_text_field {
+        margin: 10px;
+        padding-left: 10px;
+        width: 90%;
+        height: 25px;
+        font-size: 14px;
+    }
+    
+    .input_text_area {
+        margin: 10px;
+        font-size: 14px;
+        width: 90%;
+        height: 40px;
+    }
+    
+    .form_panel_submit {
+        margin-top: 10px;
+        width: 20%;
+        height: 30px;
+        font-size: 14px;
+    }
+  }

@@ -45,18 +45,18 @@
 
     <header style="background-color:white">
         <div id="secondary_screen_buttons">
-            <div id="back_button">
-                <a href="create_custom_word.php"><img src="images/back_icon.png" alt="Back Icon" style="Display:Block;width:70px;height:70px;"></a>
+            <div id="back_button" class="header_button">
+                <a href="create_custom_word.php"><img class="menu_button_image" src="images/back_icon.png" alt="Back Icon"></a>
             </div>
-            <div id="add_button">
-                <a href="create_custom_word.php"><img src="images/add_icon.png" alt="Add Icon" style="Display:Block;width:70px;height:70px;"></a>
+            <div id="add_button" class="header_button">
+                <a href="create_custom_word.php"><img class="menu_button_image" src="images/add_icon.png" alt="Add Icon"></a>
             </div>
         </div>
-        <div id="game_title">
+        <div id="secondary_screen_title">
             <p>Custom Word List</p>
         </div>
         <div id="secondary_screen_logo">
-            <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
+            <a href="https://telugupuzzles.com"><img class="logo_image" src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
         </div>
     </header>
     <body style="background-color:#f2edf2">
