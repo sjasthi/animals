@@ -45,58 +45,46 @@
 
     <header style="background-color:white">
         <div id="secondary_screen_buttons">
-            <div id="back_button">
-                <a href="index.php"><img src="images/back_icon.png" alt="Back Icon" style="Display:Block;width:70px;height:70px;"></a>
+            <div id="back_button" class="header_button">
+                <a href="index.php"><img class="menu_button_image" src="images/back_icon.png" alt="Back Icon"></a>
             </div>
-            <div id="add_button">
-                <a href="create_word.php"><img src="images/add_icon.png" alt="Add Icon" style="Display:Block;width:70px;height:70px;"></a>
+            <div id="add_button" class="header_button">
+                <a href="create_word.php"><img class="menu_button_image" src="images/add_icon.png" alt="Add Icon"></a>
             </div>
         </div>
-        <div id="game_title">
+        <div id="secondary_screen_title">
             <p>Puzzle Word List</p>
         </div>
         <div id="secondary_screen_logo">
-            <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
+            <a href="https://telugupuzzles.com"><img class="logo_image" src="images/logo.png" alt="10000 Icon"></a>
         </div>
     </header>
     <body style="background-color:#f2edf2">
 
-<?php $page_title = 'Animals > puzzle word list';
-        $word=$_GET['rn'];
+        <?php 
+            $page_title = 'Animals > puzzle word list';
+            $word=$_GET['rn'];
+            $clue = $_POST['clue'];
 
-        $new_time = $_POST['new_time'];
-        $new_date = $_POST['new_date'];
+            $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
 
-        $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
+            if ($clue != "") {
+                $UPDATE = "UPDATE puzzle_words SET clue=? WHERE word=?";            
+                $stmt = $conn->prepare($UPDATE);
+                $stmt->bind_param("ss", $clue, $word);
+                if (! $stmt->execute()) {
+                    echo $stmt->error;
+                }
+                $stmt->close();
+            } 
+            $conn->close();
+        ?>
 
-        if ($new_time != "") {
-            $UPDATE = "UPDATE puzzle_words SET time=? WHERE word=?";            
-            $stmt = $conn->prepare($UPDATE);
-            $stmt->bind_param("ss", $new_time, $word);
-            if (! $stmt->execute()) {
-                echo $stmt->error;
-            }
-            $stmt->close();
-        } 
-        if ($new_date != "") {
-            $UPDATE = "UPDATE puzzle_words SET date=? WHERE word=?";            
-            $stmt = $conn->prepare($UPDATE);
-            $stmt->bind_param("ss", $new_date, $word);
-            if (! $stmt->execute()) {
-                echo $stmt->error;
-            }
-            $stmt->close();
-        } 
+        <!-- Page Content -->
+        <br>
+        <br>
 
-        $conn->close();
-?>
-
-<!-- Page Content -->
-<br><br>
-
-    <?php
-        include('table_puzzle_words.php');
-    ?>
+        <?php include('table_puzzle_words.php'); ?>
     
-</body>
+    </body>
 </html>

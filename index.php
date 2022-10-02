@@ -6,18 +6,12 @@
     <head>
         <title>Animals</title>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/animals.css">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
         <script type="text/javascript" src="js/animals.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
         <style>
-            td {
-                font-family: Arial, Helvetica, sans-serif;
-                border: 5px solid;
-                text-align: center;
-                font-weight: bold;
-            }
             .dropbtn, .modalbtn {
                 background-color: white;
                 border-style: none;
@@ -30,8 +24,8 @@
             .dropdown-content {
                 display: none;
                 position: absolute;
+                right: 0px;
                 background-color: #f1f1f1;
-                min-width: 160px;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
                 z-index: 1;
             }
@@ -40,34 +34,42 @@
                 padding: 12px 16px;
                 text-decoration: none;
                 display: block;
+                white-space: nowrap;
             }
             .dropdown-content a:hover {background-color: #ddd;}
             .dropdown:hover .dropdown-content {display: block;}
             .dropdown:hover .dropbtn {background-color: #ddd;}
+
+            @media only screen and (max-width: 414px) {
+                .dropdown-content a, .dropdown-content p {
+                    font-size: 12px;
+                    padding: 8px 12px;
+                }
+            }
         </style>
     </head>
 
     <header style="background-color:white">
         <div id="main_screen_logo">
-            <a href="https://telugupuzzles.com"><img src="images/logo.png" alt="10000 Icon" style="height:80px;width:auto;"></a>
+            <a href="https://telugupuzzles.com"><img class="logo_image" src="images/logo.png" alt="10000 Icon"></a>
         </div>
         <div id="game_title">
             <p>Animals</p>
         </div>
         <div id="menu_buttons">
-            <div id="help_button">
+            <div id="help_button" class="header_button">
                 <button onclick="showHelpModal()" class="modalbtn">
-                    <img src="images/help_icon.png" alt="Help Icon" style="Display:Block;width:70px;height:70px;">
+                    <img class="menu_button_image" src="images/help_icon.png" alt="Help Icon">
                 </button>
             </div>
-            <div id="stat_button">
+            <div id="stat_button" class="header_button">
                 <button onclick="showStatModal()" class="modalbtn">
-                    <img src="images/stat_icon.png" alt="Stat Icon" style="Display:Block;width:70px;height:70px;">
+                    <img class="menu_button_image" src="images/stat_icon.png" alt="Stat Icon">
                 </button>
             </div>
             <div id="profile_button" class="dropdown">
                 <button class="dropbtn">
-                    <img src="images/profile_icon.png" alt="Profile Icon" style="Display:Block;width:70px;height:70px;">
+                    <img class="menu_button_image" src="images/profile_icon.png" alt="Profile Icon">
                 </button>
                 <div id="profile_dropdown" class="dropdown-content">
                     <p id="profile_menu_1">Access Level: GUEST</p>
@@ -81,68 +83,61 @@
     </header>
 
     <body onload=updateMenus() style="background-color:darkblue">
-        <div id="clue_box">
+        <div id="main_panel">
+            <div id="game_message">
 
-        </div>
-        <div id="game_panel">
-            <div id="character_tile_panel">
-                <table id="character_table"></table>
             </div>
-            <div id="animal_tile_panel">
-                <table id="animal_table"></table>
+            <div id="game_panel">
+                <div id="table_panel">
+                    <table id="character_table"></table>
+                    <table id="animal_table"></table>
+                </div>
+                <div id="submission_panel">
+                    <!-- Form calls Javascript function processGuess when the submit button is clicked. -->
+                    <form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false;">
+                        <input id="input_box" type="text" name="input_box">
+                        <input id="submit_button" type="submit" value="Submit" name="submit">
+                    </form>
+                </div>
             </div>
-        </div>
-        <div id="game_message">
-            
-        </div>
-        <div id="submission_panel">
-            <!-- Form calls Javascript function processGuess when the submit button is clicked. -->
-            <form action="" method="post" autocomplete = "off" onsubmit="processGuess();return false;">
-                <input id="input_box" type="text" name="input_box">
-                <input id="submit_button" type="submit" value="Submit" name="submit">
-            </form>
+            <div id="clue_box">
+                
+            </div>
         </div>
 
         <div id="help_modal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <pre>
-Check the info box on the right for the puzzle word language and number of guesses.
-The number of boxes in a row on the table indicate the length of the puzzle word.
-Enter a guess of the correct length, then press Enter or click the submit button.
+Check the info box on the left for the puzzle word language and number of guesses. The number of boxes in a row on the table indicate the length of the puzzle word. Enter a guess of the correct length, then press Enter or click the submit button.
 
-The animals displayed indicate how closely the guess word matches the puzzle word.
-Animals are displayed in the order of how closely a character matches a character in the puzzle word.
-Animals do NOT indicate the match level of the character in that specific location.
+The animals displayed indicate how closely the guess word matches the puzzle word. Animals are displayed in the order of how closely a character matches a character in the puzzle word. Animals do NOT indicate the match level of the character in that specific location.
 
-Example: A result of bull - bull - cow - mouse - mouse indicates that two characters in the guess word
-are in the correct location, one character is in the puzzle word but not in the correct location, and
-two characters are not in the puzzle word at all.  But it does not mean the first two characters are
-in the correct positon, the third character is in the word but not in the correct position, etc.
+Example: A result of bull - bull - cow - mouse - mouse indicates that two characters in the guess word are in the correct location, one character is in the puzzle word but not in the correct location, and two characters are not in the puzzle word at all.  But it does not mean the first two characters are in the correct positon, the third character is in the word but not in the correct position, etc.
                 </pre>
                 <h4>English:</h4>
-                <div><img src="images/bull.png" alt="Bull" style="width:40px;height:40px;vertical-align:middle;">
+                <div><img class="help_image" src="images/bull.png" alt="Bull">
                     <span>One of the characters is in the word, and in the correct position.</span></div>
-                <div><img src="images/cow.png" alt="Cow" style="width:40px;height:40px;vertical-align:middle;">
+                <div><img class="help_image" src="images/cow.png" alt="Cow">
                     <span>One of the characters is in the word, but in the wrong position.</span></div>
-                <div><img src="images/mouse.png" alt="Mouse" style="width:40px;height:40px;vertical-align:middle;">
+                <div><img class="help_image" src="images/mouse.png" alt="Mouse">
                     <span>One of the characters is not in the word.</span></div>
                 <p></p>
                 <h4>Telugu:</h4>
-                <div><img src="images/elephant.png" alt="Elephant" style="width:40px;height:40px;vertical-align:middle;">
+                <div><img class="help_image" src="images/elephant.png" alt="Elephant">
                     <span>One of the logical characters is in the word, and in the correct position.</span></div>
-                <div><img src="images/fish.png" alt="Fish" style="width:40px;height:40px;vertical-align:middle;">
+                <div><img class="help_image" src="images/fish.png" alt="Fish">
                     <span>One of the logical characters is in the word, but in the wrong position.</span></div>
-                <div><img src="images/horse.png" alt="Horse" style="width:40px;height:40px;vertical-align:middle;">
+                <div><img class="help_image" src="images/horse.png" alt="Horse">
                     <span>One of the base characters is in the word, and in the correct position.</span></div>
-                <div><img src="images/frog.png" alt="Frog" style="width:40px;height:40px;vertical-align:middle;">
+                <div><img class="help_image" src="images/frog.png" alt="Frog">
                     <span>One of the base characters is in the word, but in the wrong position.</span></div>
-                <div><img src="images/mouse.png" alt="Mouse" style="width:40px;height:40px;vertical-align:middle;">
+                <div><img class="help_image" src="images/mouse.png" alt="Mouse">
                     <span>None of the base or logical characters are in the word.</span></div>
                 <p></p>
                 <h4>About:</h4>
                 <pre>
-Animals: Version 1
+Animals: Version 2.0
 This game was created as part of the ICS-499 course at Metropolitan State University, St. Paul, MN.
 Marc Wedo       marc.wedo@gmail.com
 Jeremy Olson    olsonjeremy33@yahoo.com
@@ -176,7 +171,7 @@ Jace Huddock    jmhuddock09@gmail.com
             // Javascript function to take a screenshot of the completed game
             function screenshot(){ 
                 if(userRole == "ADMIN" || userRole == "SUPER_ADMIN") {  
-                    html2canvas(document.querySelector("#game_panel")).then(canvas => {
+                    html2canvas(document.querySelector("#table_panel")).then(canvas => {
                         var myImage = canvas.toDataURL("image/png");
                         var tWindow = window.open("");
                     $(tWindow.document.body)
@@ -242,6 +237,13 @@ Jace Huddock    jmhuddock09@gmail.com
                     $puzzleWord = $row["word"]; ?>
                     var word = "<?php echo $puzzleWord; ?>";
                     fillPuzzleWord(word);
+                    // TEST WORDS OF VARIOUS LENGTHS. To use, comment out previous line, then un-comment the word you want to test with:
+                    //fillPuzzleWord("ask");
+                    //fillPuzzleWord("test");
+                    //fillPuzzleWord("final");
+                    //fillPuzzleWord("కలువ");
+                    //fillPuzzleWord("గణపతి");
+                    //fillPuzzleWord("విశాఖపట్నం");
             <?php 
                 } ?>
 
