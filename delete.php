@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="css/animals.css">
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
         <script src="js/animals.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>     
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <style>
             td {
                 font-family: Arial, Helvetica, sans-serif;
@@ -65,15 +65,16 @@
 ?>
 
 <!-- Page Content -->
+<!-- Page Content -->
 <br><br>
-   
+
     <h2 id="title">Word List</h2><br>
-    
+
     <?php
                     $conn = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_DATABASE);
                     $word=$_GET['rn'];
                     $query = "DELETE FROM puzzle_words WHERE word = '$word'";
-                    
+
                     $data=mysqli_query($conn,$query);
                     if($data) {
                         echo "<br><p style='text-align:center'>Record deleted successfully</p> <br>";
